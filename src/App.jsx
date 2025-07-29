@@ -1,47 +1,23 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Login from "./components/Auth/Login";
+import Register from "./components/Auth/Register";
+import StudentList from "./components/Students/StudentList";
+import StudentDetails from "./components/Students/StudentDetails";
+import StudentAdd from "./components/Students/StudentAdd";
 
 function App() {
-  const [invoices, setInvoices] = useState([]);
-
-  useEffect(() => {
-    axios
-      .get("http://localhost:3001/api/invoices")
-      .then((res) => setInvoices(res.data))
-      .catch((err) => console.error(err));
-  }, []);
-
   return (
-    <div className="p-4">
-      <h1 className="text-xl font-bold">Danh sách Hóa đơn học phí</h1>
-      <ul className="mt-4 space-y-2">
-        {invoices.map((invoice) => (
-          <li key={invoice.id} className="border p-3 rounded shadow">
-            <div>
-              <strong>Mã:</strong> {invoice.id}
-            </div>
-            <div>
-              <strong>Học sinh:</strong> {invoice.studentName}
-            </div>
-            <div>
-              <strong>Số tiền:</strong> {invoice.amount.toLocaleString()}đ
-            </div>
-            <div>
-              <strong>Trạng thái:</strong>
-              <span
-                className={
-                  invoice.status === "paid" ? "text-green-600" : "text-red-600"
-                }
-              >
-                {invoice.status === "paid"
-                  ? "Đã thanh toán"
-                  : "Chưa thanh toán"}
-              </span>
-            </div>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/students" element={<StudentList />} />
+        <Route path="/students/:id" element={<StudentDetails />} />
+        <Route path="/students/add" element={<StudentAdd />} />
+        <Route path="*" element={<div>404 Not Found</div>} />
+      </Routes>
+    </Router>
   );
 }
 
