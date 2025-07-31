@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { updateStudent } from "../../services/studentService";
 import { getClasses } from "../../services/classService"; // Import hàm lấy danh sách lớp
-import { FaTimes, FaUser, FaPhone, FaCalendarAlt, FaVenusMars, FaChalkboardTeacher } from "react-icons/fa";
+import { FaTimes, FaUser, FaPhone, FaCalendarAlt, FaVenusMars, FaChalkboardTeacher } from "react-icons/fa"; // Đồng bộ các icon với StudentDetails
 
 const StudentEdit = ({ student, onClose, onStudentUpdated }) => {
   const [formData, setFormData] = useState({
@@ -82,7 +82,7 @@ const StudentEdit = ({ student, onClose, onStudentUpdated }) => {
             </label>
             <div className="flex items-center space-x-4">
               <div className="bg-blue-500 text-white text-xl flex-shrink-0 rounded-full p-2">
-                <FaUser />
+                <FaUser /> {/* Đồng bộ icon */}
               </div>
               <input
                 type="text"
@@ -102,8 +102,8 @@ const StudentEdit = ({ student, onClose, onStudentUpdated }) => {
               Lớp
             </label>
             <div className="flex items-center space-x-4">
-              <div className="bg-blue-500 text-white text-xl flex-shrink-0 rounded-full p-2">
-                <FaChalkboardTeacher />
+              <div className="bg-green-500 text-white text-xl flex-shrink-0 rounded-full p-2">
+                <FaChalkboardTeacher /> {/* Đồng bộ icon */}
               </div>
               <select
                 name="classId"
@@ -128,8 +128,8 @@ const StudentEdit = ({ student, onClose, onStudentUpdated }) => {
               Giới tính
             </label>
             <div className="flex items-center space-x-4">
-              <div className="bg-blue-500 text-white text-xl flex-shrink-0 rounded-full p-2">
-                <FaVenusMars />
+              <div className="bg-pink-500 text-white text-xl flex-shrink-0 rounded-full p-2">
+                <FaVenusMars /> {/* Đồng bộ icon */}
               </div>
               <select
                 name="gender"
@@ -150,8 +150,8 @@ const StudentEdit = ({ student, onClose, onStudentUpdated }) => {
               Số điện thoại
             </label>
             <div className="flex items-center space-x-4">
-              <div className="bg-blue-500 text-white text-xl flex-shrink-0 rounded-full p-2">
-                <FaPhone />
+              <div className="bg-yellow-500 text-white text-xl flex-shrink-0 rounded-full p-2">
+                <FaPhone /> {/* Đồng bộ icon */}
               </div>
               <input
                 type="text"
@@ -170,8 +170,8 @@ const StudentEdit = ({ student, onClose, onStudentUpdated }) => {
               Ngày sinh
             </label>
             <div className="flex items-center space-x-4">
-              <div className="bg-blue-500 text-white text-xl flex-shrink-0 rounded-full p-2">
-                <FaCalendarAlt />
+              <div className="bg-purple-500 text-white text-xl flex-shrink-0 rounded-full p-2">
+                <FaCalendarAlt /> {/* Đồng bộ icon */}
               </div>
               <input
                 type="date"

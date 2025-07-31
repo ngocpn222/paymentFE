@@ -1,5 +1,5 @@
 import React from "react";
-import { FaTimes } from "react-icons/fa";
+import { FaTimes, FaBook, FaInfoCircle, FaCreditCard, FaCode } from "react-icons/fa";
 
 const SubjectDetails = ({ subject, onClose }) => {
   return (
@@ -19,24 +19,50 @@ const SubjectDetails = ({ subject, onClose }) => {
         >
           <FaTimes className="text-gray-500 hover:text-red-500 transition" />
         </button>
-        <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
-          Chi tiết môn học
+        {/* Tiêu đề có icon */}
+        <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center flex items-center justify-center space-x-3">
+          <FaBook className="text-blue-500" />
+          <span>Chi tiết môn học</span>
         </h2>
         <div className="text-gray-700 space-y-4">
-          <div className="flex justify-between border-b border-gray-300 pb-2">
-            <span className="font-medium text-gray-700">Tên môn học:</span>
+          {/* Tên môn học */}
+          <div className="flex justify-between items-center border-b border-gray-300 pb-2">
+            <span className="font-medium text-gray-700 flex items-center">
+              <div className="bg-blue-500 text-white text-xl flex-shrink-0 rounded-full p-2 mr-2">
+                <FaBook />
+              </div>
+              Tên môn học:
+            </span>
             <span className="text-gray-800">{subject?.name || "Không rõ"}</span>
           </div>
-          <div className="flex justify-between border-b border-gray-300 pb-2">
-            <span className="font-medium text-gray-700">Mã môn học:</span>
+          {/* Mã môn học */}
+          <div className="flex justify-between items-center border-b border-gray-300 pb-2">
+            <span className="font-medium text-gray-700 flex items-center">
+              <div className="bg-green-500 text-white text-xl flex-shrink-0 rounded-full p-2 mr-2">
+                <FaCode />
+              </div>
+              Mã môn học:
+            </span>
             <span className="text-gray-800">{subject?.code || "Không rõ"}</span>
           </div>
-          <div className="flex justify-between border-b border-gray-300 pb-2">
-            <span className="font-medium text-gray-700">Mô tả:</span>
+          {/* Mô tả */}
+          <div className="flex justify-between items-center border-b border-gray-300 pb-2">
+            <span className="font-medium text-gray-700 flex items-center">
+              <div className="bg-yellow-500 text-white text-xl flex-shrink-0 rounded-full p-2 mr-2">
+                <FaInfoCircle />
+              </div>
+              Mô tả:
+            </span>
             <span className="text-gray-800">{subject?.description || "Không rõ"}</span>
           </div>
-          <div className="flex justify-between border-b border-gray-300 pb-2">
-            <span className="font-medium text-gray-700">Số tín chỉ:</span>
+          {/* Số tín chỉ */}
+          <div className="flex justify-between items-center border-b border-gray-300 pb-2">
+            <span className="font-medium text-gray-700 flex items-center">
+              <div className="bg-purple-500 text-white text-xl flex-shrink-0 rounded-full p-2 mr-2">
+                <FaCreditCard />
+              </div>
+              Số tín chỉ:
+            </span>
             <span className="text-gray-800">{subject?.credit || "Không rõ"}</span>
           </div>
         </div>

@@ -3,7 +3,7 @@ import { getClasses, deleteClass } from "../../services/classService";
 import ClassDetails from "./ClassDetails";
 import AddClass from "./AddClass";
 import EditClass from "./EditClass";
-import { FaChalkboardTeacher, FaPlus } from "react-icons/fa";
+import { FaChalkboardTeacher, FaInfoCircle, FaUsers, FaTrash, FaPlus } from "react-icons/fa"; // Import thêm icon
 
 const ClassList = () => {
   const [classes, setClasses] = useState([]);
@@ -113,7 +113,7 @@ const ClassList = () => {
       {/* Nút thêm */}
       <div className="flex justify-end mb-6">
         <button
-          className="flex items-center bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition shadow-md"
+          className="flex items-center bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition shadow-md"
           onClick={handleOpenAddPopup}
         >
           <FaPlus className="mr-2" />
@@ -126,10 +126,22 @@ const ClassList = () => {
         <table className="w-full bg-white rounded-lg shadow-md overflow-hidden">
           <thead>
             <tr className="bg-blue-100 text-gray-700">
-              <th className="px-6 py-3 text-center">Tên lớp</th>
-              <th className="px-6 py-3 text-center">Mô tả</th>
-              <th className="px-6 py-3 text-center">Số học sinh</th>
-              <th className="px-6 py-3 text-center">Hành động</th>
+              <th className="px-6 py-3 text-center">
+                <FaChalkboardTeacher className="inline-block mr-2" />
+                Tên lớp
+              </th>
+              <th className="px-6 py-3 text-center">
+                <FaInfoCircle className="inline-block mr-2" />
+                Mô tả
+              </th>
+              <th className="px-6 py-3 text-center">
+                <FaUsers className="inline-block mr-2" />
+                Số học sinh
+              </th>
+              <th className="px-6 py-3 text-center">
+                <FaTrash className="inline-block mr-2" />
+                Hành động
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -141,9 +153,7 @@ const ClassList = () => {
               >
                 <td className="px-6 py-3 text-center">{cls.name}</td>
                 <td className="px-6 py-3 text-center">{cls.description || "Không có"}</td>
-                <td className="px-6 py-3 text-center">
-                  {cls.studentCount || 0}
-                </td>
+                <td className="px-6 py-3 text-center">{cls.studentCount || 0}</td>
                 <td className="px-6 py-3 text-center">
                   <div className="flex justify-center items-center space-x-2">
                     <button
@@ -165,7 +175,7 @@ const ClassList = () => {
                       onClick={() => handleOpenDeletePopup(cls)}
                       title="Xóa"
                     >
-                      🗑️
+                      <FaTrash />
                     </button>
                   </div>
                 </td>
@@ -205,9 +215,10 @@ const ClassList = () => {
           ></div>
           {/* Popup */}
           <div className="relative bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-            {/* Tiêu đề */}
-            <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
-              Xác nhận xóa
+            {/* Tiêu đề có icon */}
+            <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center flex items-center justify-center space-x-3">
+              <FaTrash className="text-red-500" />
+              <span>Xác nhận xóa</span>
             </h2>
             <p className="text-gray-700 mb-6 text-center">
               Bạn có chắc chắn muốn xóa lớp học với thông tin sau không?
@@ -215,11 +226,15 @@ const ClassList = () => {
             {/* Thông tin lớp */}
             <div className="text-gray-700 space-y-4">
               <div className="flex justify-between border-b border-gray-300 pb-2">
-                <span className="font-medium text-gray-700">Tên lớp:</span>
+                <span className="font-medium text-gray-700 flex items-center">
+                  <FaChalkboardTeacher className="mr-2 text-blue-500" /> Tên lớp:
+                </span>
                 <span className="text-gray-800">{deletingClass?.name || "Không rõ"}</span>
               </div>
               <div className="flex justify-between border-b border-gray-300 pb-2">
-                <span className="font-medium text-gray-700">Mô tả:</span>
+                <span className="font-medium text-gray-700 flex items-center">
+                  <FaInfoCircle className="mr-2 text-green-500" /> Mô tả:
+                </span>
                 <span className="text-gray-800">{deletingClass?.description || "Không có"}</span>
               </div>
             </div>

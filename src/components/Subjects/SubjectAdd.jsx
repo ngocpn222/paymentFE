@@ -46,8 +46,10 @@ const SubjectAdd = ({ onClose, onSubjectAdded }) => {
         >
           <FaTimes className="text-gray-500 hover:text-red-500 transition" />
         </button>
-        <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
-          Thêm môn học mới
+        {/* Tiêu đề có icon */}
+        <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center flex items-center justify-center space-x-3">
+          <FaBook className="text-blue-500" />
+          <span>Thêm môn học mới</span>
         </h1>
         {message && (
           <p

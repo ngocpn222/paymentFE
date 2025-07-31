@@ -115,7 +115,7 @@ const SubjectList = () => {
       {/* Nút thêm */}
       <div className="flex justify-end mb-6">
         <button
-          className="flex items-center bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition shadow-md"
+          className="flex items-center bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition shadow-md"
           onClick={handleOpenAddPopup}
         >
           <FaPlus className="mr-2" />
@@ -225,9 +225,10 @@ const SubjectList = () => {
           ></div>
           {/* Popup */}
           <div className="relative bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-            {/* Tiêu đề */}
-            <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
-              Xác nhận xóa
+            {/* Tiêu đề có icon */}
+            <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center flex items-center justify-center space-x-3">
+              <FaTools className="text-red-500" />
+              <span>Xác nhận xóa</span>
             </h2>
             <p className="text-gray-700 mb-6 text-center">
               Bạn có chắc chắn muốn xóa môn học với thông tin sau không?
@@ -235,15 +236,30 @@ const SubjectList = () => {
             {/* Thông tin môn học */}
             <div className="text-gray-700 space-y-4">
               <div className="flex justify-between border-b border-gray-300 pb-2">
-                <span className="font-medium text-gray-700">Tên môn học:</span>
+                <span className="font-medium text-gray-700 flex items-center">
+                  <div className="bg-blue-500 text-white text-xl flex-shrink-0 rounded-full p-2 mr-2">
+                    <FaBook />
+                  </div>
+                  Tên môn học:
+                </span>
                 <span className="text-gray-800">{deletingSubject?.name || "Không rõ"}</span>
               </div>
               <div className="flex justify-between border-b border-gray-300 pb-2">
-                <span className="font-medium text-gray-700">Mã môn học:</span>
+                <span className="font-medium text-gray-700 flex items-center">
+                  <div className="bg-green-500 text-white text-xl flex-shrink-0 rounded-full p-2 mr-2">
+                    <FaCode />
+                  </div>
+                  Mã môn học:
+                </span>
                 <span className="text-gray-800">{deletingSubject?.code || "Không rõ"}</span>
               </div>
               <div className="flex justify-between border-b border-gray-300 pb-2">
-                <span className="font-medium text-gray-700">Số tín chỉ:</span>
+                <span className="font-medium text-gray-700 flex items-center">
+                  <div className="bg-purple-500 text-white text-xl flex-shrink-0 rounded-full p-2 mr-2">
+                    <FaCreditCard />
+                  </div>
+                  Số tín chỉ:
+                </span>
                 <span className="text-gray-800">{deletingSubject?.credit || "Không rõ"}</span>
               </div>
             </div>

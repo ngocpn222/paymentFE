@@ -44,14 +44,13 @@ const EditClass = ({ classData, onClose, onClassUpdated }) => {
           <FaTimes className="text-gray-500 hover:text-red-500 transition" />
         </button>
         <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center flex items-center justify-center space-x-3">
-          <FaChalkboardTeacher className="text-blue-500" />
+          <FaChalkboardTeacher className="text-indigo-500" />
           <span>Sửa thông tin lớp học</span>
         </h1>
         {message && (
           <p
-            className={`text-center mb-4 ${
-              message.includes("thành công") ? "text-green-600" : "text-red-600"
-            }`}
+            className={`text-center mb-4 ${message.includes("thành công") ? "text-green-600" : "text-red-600"
+              }`}
           >
             {message}
           </p>
@@ -63,7 +62,7 @@ const EditClass = ({ classData, onClose, onClassUpdated }) => {
               Tên lớp
             </label>
             <div className="flex items-center space-x-4">
-              <div className="bg-blue-500 text-white text-xl flex-shrink-0 rounded-full p-2">
+              <div className="bg-indigo-500 text-white text-xl flex-shrink-0 rounded-full p-2">
                 <FaChalkboardTeacher />
               </div>
               <input
@@ -71,7 +70,7 @@ const EditClass = ({ classData, onClose, onClassUpdated }) => {
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 placeholder="Nhập tên lớp"
                 required
               />
@@ -84,14 +83,14 @@ const EditClass = ({ classData, onClose, onClassUpdated }) => {
               Mô tả
             </label>
             <div className="flex items-center space-x-4">
-              <div className="bg-blue-500 text-white text-xl flex-shrink-0 rounded-full p-2">
+              <div className="bg-green-500 text-white text-xl flex-shrink-0 rounded-full p-2">
                 <FaInfoCircle />
               </div>
               <textarea
                 name="description"
                 value={formData.description}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                 placeholder="Nhập mô tả lớp học"
               />
             </div>
@@ -100,7 +99,7 @@ const EditClass = ({ classData, onClose, onClassUpdated }) => {
           {/* Nút sửa thông tin */}
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300"
+            className="w-full bg-indigo-500 text-white py-2 rounded-lg hover:bg-indigo-600 transition duration-300"
           >
             Cập nhật thông tin
           </button>
