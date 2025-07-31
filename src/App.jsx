@@ -3,10 +3,11 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import './App.css';
 import Login from "./components/Login";
 import Register from "./components/Register";
-import Home from "./components/Home"; 
+import Home from "./components/Home";
 import StudentList from "./components/Students/StudentList";
-import StudentDetails from "./components/Students/StudentDetails";
-import StudentAdd from "./components/Students/StudentAdd";
+import ClassList from "./components/Classes/ClassList";
+import TeacherList from "./components/Teachers/TeacherList";
+import SubjectList from "./components/Subjects/SubjectList";
 
 function App() {
   return (
@@ -16,8 +17,9 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/home" element={<Home />} />
         <Route path="/students" element={<StudentList />} />
-        <Route path="/students/:id" element={<StudentDetails />} />
-        <Route path="/students/add" element={<StudentAdd />} />
+        <Route path="/classes" element={<ClassList />} />
+        <Route path="/teachers" element={<TeacherList />} />
+        <Route path="/subjects" element={<SubjectList />} />
         <Route path="*" element={<div>404 Not Found</div>} />
       </Routes>
     </Router>

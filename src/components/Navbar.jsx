@@ -1,93 +1,74 @@
-import React, { useState } from "react";
+import React from "react";
+import { NavLink } from "react-router-dom";
 
-const Navbar = ({ onToggle }) => {
-  const [isCollapsed, setIsCollapsed] = useState(true);
-
-  const toggleNavbar = () => {
-    const newState = !isCollapsed;
-    setIsCollapsed(newState);
-    onToggle(newState); // Thông báo trạng thái thu gọn
-  };
-
+const Navbar = () => {
   return (
-    <>
-      {/* Navbar */}
-      <div
-        className={`fixed top-0 ${
-          isCollapsed ? "left-[-100%]" : "left-0"
-        } h-screen w-[15%] bg-gradient-to-b from-red-500 to-orange-500 flex flex-col items-center py-4 transition-all duration-300`}
-      >
-        {/* Close Button */}
-        <button
-          onClick={toggleNavbar}
-          className="absolute top-4 right-4 bg-white text-red-500 rounded-full p-2 shadow-lg hover:bg-gray-200 transition"
-        >
-          <span className="material-icons">chevron_left</span>
-        </button>
-
-        {/* Logo */}
-        <div className="mb-8">
-          <img
-            src="https://via.placeholder.com/80"
-            alt="Logo"
-            className="rounded-full border-2 border-white"
-          />
-        </div>
-
-        {/* Navigation Links */}
-        <nav className="flex flex-col space-y-6">
-          <a
-            href="#"
-            className="text-white text-lg hover:text-gray-200 transition duration-300 flex items-center"
-          >
-            <span className="material-icons">home</span>
-            <span className="ml-2">Home</span>
-          </a>
-          <a
-            href="#"
-            className="text-white text-lg hover:text-gray-200 transition duration-300 flex items-center"
-          >
-            <span className="material-icons">inbox</span>
-            <span className="ml-2">Inbox</span>
-          </a>
-          <a
-            href="#"
-            className="text-white text-lg hover:text-gray-200 transition duration-300 flex items-center"
-          >
-            <span className="material-icons">calendar_today</span>
-            <span className="ml-2">Calendar</span>
-          </a>
-          <a
-            href="#"
-            className="text-white text-lg hover:text-gray-200 transition duration-300 flex items-center"
-          >
-            <span className="material-icons">settings</span>
-            <span className="ml-2">Settings</span>
-          </a>
-        </nav>
-
-        {/* Footer */}
-        <div className="mt-auto">
-          <a
-            href="#"
-            className="text-white text-lg hover:text-gray-200 transition duration-300 flex items-center"
-          >
-            <span className="material-icons">logout</span>
-            <span className="ml-2">Logout</span>
-          </a>
-        </div>
+    <div
+      className="fixed top-0 left-0 h-full w-[15%] bg-white flex flex-col items-center py-4 transition-all duration-300 z-50"
+    >
+      {/* Logo */}
+      <div className="mt-2 mb-8 flex justify-center">
+        <img
+          src="/logo_payment.png"
+          alt="Logo"
+          className="w-32 h-32 rounded-full border-2 border-gray-300"
+        />
       </div>
 
-      {/* Open Button */}
-      {isCollapsed && (
-        <button
-          onClick={toggleNavbar}
-          className="fixed top-4 left-4 bg-white text-red-500 rounded-full p-2 shadow-lg hover:bg-gray-200 transition"
+      {/* Navigation Links */}
+      <nav className="flex flex-col space-y-6">
+        <NavLink
+          to="/students"
+          className={({ isActive }) =>
+            `text-lg flex items-center ${isActive ? "text-blue-500 font-bold" : "text-gray-700 hover:text-gray-500"
+            } transition duration-300`
+          }
         >
-          <span className="material-icons">menu</span>
-        </button>
-      )}
-    </>
+          <span className="ml-2">Students</span>
+        </NavLink>
+        <NavLink
+          to="/teachers"
+          className={({ isActive }) =>
+            `text-lg flex items-center ${isActive ? "text-blue-500 font-bold" : "text-gray-700 hover:text-gray-500"
+            } transition duration-300`
+          }
+        >
+          <span className="ml-2">Teachers</span>
+        </NavLink>
+        <NavLink
+          to="/classes"
+          className={({ isActive }) =>
+            `text-lg flex items-center ${isActive ? "text-blue-500 font-bold" : "text-gray-700 hover:text-gray-500"
+            } transition duration-300`
+          }
+        >
+          <span className="ml-2">Classes</span>
+        </NavLink>
+        <NavLink
+          to="/subjects"
+          className={({ isActive }) =>
+            `text-lg flex items-center ${isActive ? "text-blue-500 font-bold" : "text-gray-700 hover:text-gray-500"
+            } transition duration-300`
+          }
+        >
+          <span className="ml-2">Subjects</span>
+        </NavLink>
+      </nav>
+
+      {/* Footer */}
+      <div className="mt-auto">
+        <NavLink
+          to="/logout"
+          className={({ isActive }) =>
+            `text-lg flex items-center ${isActive ? "text-blue-500 font-bold" : "text-gray-700 hover:text-gray-500"
+            } transition duration-300`
+          }
+        >
+          <span className="material-icons">logout</span>
+          <span className="ml-2">Logout</span>
+        </NavLink>
+      </div>
+    </div>
   );
 };
 

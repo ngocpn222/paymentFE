@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { addStudent } from "../../services/studentService";
-import { getClasses } from "../../services/classService";
+import { updateStudent } from "../../services/studentService";
+import { getClasses } from "../../services/classService"; // Import hàm lấy danh sách lớp
 import { FaTimes, FaUser, FaPhone, FaCalendarAlt, FaVenusMars, FaChalkboardTeacher } from "react-icons/fa";
 
-const StudentAdd = ({ onClose, onStudentAdded }) => {
+const StudentEdit = ({ student, onClose, onStudentUpdated }) => {
   const [formData, setFormData] = useState({
-    name: "",
-    classId: "",
-    gender: "",
-    phone: "",
-    dob: "",
+    name: student.name || "",
+    classId: student.classId || "",
+    gender: student.gender || "",
+    phone: student.phone || "",
+    dob: student.dob || "",
   });
-  const [classes, setClasses] = useState([]);
+  const [classes, setClasses] = useState([]); // State để lưu danh sách lớp học
   const [message, setMessage] = useState("");
 
   // Lấy danh sách lớp học khi component được mount
@@ -19,7 +19,7 @@ const StudentAdd = ({ onClose, onStudentAdded }) => {
     const fetchClasses = async () => {
       try {
         const data = await getClasses();
-        setClasses(data);
+        setClasses(data); // Lưu danh sách lớp học vào state
       } catch (error) {
         console.error("Error fetching classes:", error);
       }
@@ -35,15 +35,13 @@ const StudentAdd = ({ onClose, onStudentAdded }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { userId, ...dataToSend } = formData; // Loại bỏ userId nếu không cần
-      console.log("Dữ liệu gửi đi:", dataToSend);
-      await addStudent(dataToSend);
-      setMessage("Học sinh đã được thêm thành công!");
-      onStudentAdded();
+      const updatedStudent = await updateStudent(student._id, formData);
+      setMessage("Thông tin học sinh đã được cập nhật thành công!");
+      onStudentUpdated(updatedStudent);
       onClose();
     } catch (error) {
-      console.error("Error adding student:", error.response?.data || error.message);
-      setMessage("Có lỗi xảy ra khi thêm học sinh.");
+      console.error("Error updating student:", error);
+      setMessage("Có lỗi xảy ra khi cập nhật thông tin học sinh.");
     }
   };
 
@@ -55,7 +53,7 @@ const StudentAdd = ({ onClose, onStudentAdded }) => {
         style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
         onClick={onClose}
       ></div>
-      {/* Form thêm học sinh */}
+      {/* Form sửa học sinh */}
       <div className="relative bg-white bg-opacity-90 p-8 rounded-lg shadow-lg w-full max-w-lg">
         {/* Nút đóng */}
         <button
@@ -66,7 +64,7 @@ const StudentAdd = ({ onClose, onStudentAdded }) => {
         </button>
         <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center flex items-center justify-center space-x-3">
           <FaChalkboardTeacher className="text-blue-500" />
-          <span>Thêm học sinh mới</span>
+          <span>Sửa thông tin học sinh</span>
         </h1>
         {message && (
           <p
@@ -185,12 +183,12 @@ const StudentAdd = ({ onClose, onStudentAdded }) => {
             </div>
           </div>
 
-          {/* Nút thêm học sinh */}
+          {/* Nút sửa thông tin */}
           <button
             type="submit"
             className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300"
           >
-            Thêm học sinh
+            Cập nhật thông tin
           </button>
         </form>
       </div>
@@ -198,4 +196,4 @@ const StudentAdd = ({ onClose, onStudentAdded }) => {
   );
 };
 
-export default StudentAdd;
+export default StudentEdit;

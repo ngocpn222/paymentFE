@@ -6,7 +6,7 @@ export const getStudents = async () => {
     const response = await api.get("/students");
     return response.data;
   } catch (error) {
-    console.error("Error fetching students:", error);
+    console.error("Error fetching students:", error.response?.data || error.message);
     throw error;
   }
 };
@@ -17,7 +17,7 @@ export const getStudentById = async (id) => {
     const response = await api.get(`/students/${id}`);
     return response.data;
   } catch (error) {
-    console.error(`Error fetching student with ID ${id}:`, error);
+    console.error(`Error fetching student with ID ${id}:`, error.response?.data || error.message);
     throw error;
   }
 };
@@ -25,10 +25,12 @@ export const getStudentById = async (id) => {
 // Thêm học sinh mới
 export const addStudent = async (studentData) => {
   try {
+    // Kiểm tra dữ liệu trước khi gửi
+    console.log("Adding student with data:", studentData);
     const response = await api.post("/students", studentData);
     return response.data;
   } catch (error) {
-    console.error("Error adding student:", error);
+    console.error("Error adding student:", error.response?.data || error.message);
     throw error;
   }
 };
@@ -39,7 +41,7 @@ export const updateStudent = async (id, studentData) => {
     const response = await api.put(`/students/${id}`, studentData);
     return response.data;
   } catch (error) {
-    console.error(`Error updating student with ID ${id}:`, error);
+    console.error(`Error updating student with ID ${id}:`, error.response?.data || error.message);
     throw error;
   }
 };
@@ -50,7 +52,7 @@ export const deleteStudent = async (id) => {
     const response = await api.delete(`/students/${id}`);
     return response.data;
   } catch (error) {
-    console.error(`Error deleting student with ID ${id}:`, error);
+    console.error("Error deleting student:", error.response?.data || error.message);
     throw error;
   }
 };

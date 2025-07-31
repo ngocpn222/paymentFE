@@ -12,7 +12,9 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await api.post("/auth/login", { email, password });
+      // Lưu token và email vào localStorage
       localStorage.setItem("token", response.data.token);
+      localStorage.setItem("email", email); 
       navigate("/home");
     } catch (err) {
       setError(err.response?.data?.message || "Đăng nhập thất bại");
