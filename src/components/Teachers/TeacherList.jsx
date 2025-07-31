@@ -1,20 +1,32 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { getTeachers, deleteTeacher } from "../../services/teacherService";
-import TeacherDetails from "./TeacherDetails";
 import TeacherAdd from "./TeacherAdd";
 import TeacherEdit from "./TeacherEdit";
-import { FaChalkboardTeacher, FaPlus } from "react-icons/fa";
+import TeacherDetails from "./TeacherDetails";
+import {
+  FaChalkboardTeacher,
+  FaPlus,
+  FaUser,
+  FaPhone,
+  FaVenusMars,
+  FaTrash,
+  FaCalendarAlt,
+  FaEnvelope,
+} from "react-icons/fa";
+import { format } from "date-fns";
 
 const TeacherList = () => {
+  // State quản lý
   const [teachers, setTeachers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedTeacher, setSelectedTeacher] = useState(null);
   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
-  const [editingTeacher, setEditingTeacher] = useState(null);
   const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
+  const [isDetailsPopupOpen, setIsDetailsPopupOpen] = useState(false);
   const [deletingTeacher, setDeletingTeacher] = useState(null);
 
+  // Lấy danh sách giáo viên
   useEffect(() => {
     const fetchTeachers = async () => {
       try {
@@ -30,70 +42,46 @@ const TeacherList = () => {
     fetchTeachers();
   }, []);
 
-  const handleViewDetails = (teacher) => {
-    setSelectedTeacher(teacher);
-  };
-
-  const handleCloseDetails = () => {
-    setSelectedTeacher(null);
-  };
-
-  const handleOpenAddPopup = () => {
-    setIsAddPopupOpen(true);
-  };
-
-  const handleCloseAddPopup = () => {
-    setIsAddPopupOpen(false);
-  };
-
-  const handleTeacherAdded = (newTeacher) => {
-    setTeachers((prevTeachers) => [...prevTeachers, newTeacher]);
-  };
+  // Hàm xử lý popup
+  const handleOpenAddPopup = () => setIsAddPopupOpen(true);
+  const handleCloseAddPopup = () => setIsAddPopupOpen(false);
 
   const handleOpenEditPopup = (teacher) => {
-    setEditingTeacher(teacher);
+    setSelectedTeacher(teacher);
     setIsEditPopupOpen(true);
   };
-
-  const handleCloseEditPopup = () => {
-    setEditingTeacher(null);
-    setIsEditPopupOpen(false);
-  };
-
-  const handleTeacherUpdated = (updatedTeacher) => {
-    setTeachers((prevTeachers) =>
-      prevTeachers.map((teacher) =>
-        teacher._id === updatedTeacher._id ? updatedTeacher : teacher
-      )
-    );
-  };
+  const handleCloseEditPopup = () => setIsEditPopupOpen(false);
 
   const handleOpenDeletePopup = (teacher) => {
     setDeletingTeacher(teacher);
     setIsDeletePopupOpen(true);
   };
-
-  const handleCloseDeletePopup = () => {
-    setDeletingTeacher(null);
-    setIsDeletePopupOpen(false);
-  };
-
-  const handleTeacherDeleted = (deletedTeacherId) => {
-    setTeachers((prevTeachers) =>
-      prevTeachers.filter((teacher) => teacher._id !== deletedTeacherId)
-    );
-  };
+  const handleCloseDeletePopup = () => setIsDeletePopupOpen(false);
 
   const handleDeleteTeacher = async () => {
     try {
       await deleteTeacher(deletingTeacher._id);
-      handleTeacherDeleted(deletingTeacher._id);
+      setTeachers((prev) => prev.filter((t) => t._id !== deletingTeacher._id));
       handleCloseDeletePopup();
     } catch (error) {
       console.error("Error deleting teacher:", error);
     }
   };
 
+  const translateGender = (gender) => {
+    switch (gender) {
+      case "Male":
+        return "Nam";
+      case "Female":
+        return "Nữ";
+      case "Other":
+        return "Khác";
+      default:
+        return "Không rõ";
+    }
+  };
+
+  // Hiển thị trạng thái tải
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -115,7 +103,7 @@ const TeacherList = () => {
       {/* Nút thêm */}
       <div className="flex justify-end mb-6">
         <button
-          className="flex items-center bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition shadow-md"
+          className="flex items-center bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition shadow-md"
           onClick={handleOpenAddPopup}
         >
           <FaPlus className="mr-2" />
@@ -129,12 +117,25 @@ const TeacherList = () => {
           <thead>
             <tr className="bg-blue-100 text-gray-700">
               <th className="px-6 py-3 text-center">
-                <FaChalkboardTeacher className="inline-block mr-2" />
+                <FaUser className="inline-block mr-2" />
                 Tên
               </th>
-              <th className="px-6 py-3 text-center">Email</th>
-              <th className="px-6 py-3 text-center">Số điện thoại</th>
-              <th className="px-6 py-3 text-center">Hành động</th>
+              <th className="px-6 py-3 text-center">
+                <FaVenusMars className="inline-block mr-2" />
+                Giới tính
+              </th>
+              <th className="px-6 py-3 text-center">
+                <FaPhone className="inline-block mr-2" />
+                Số điện thoại
+              </th>
+              <th className="px-6 py-3 text-center">
+                <FaCalendarAlt className="inline-block mr-2" />
+                Ngày sinh
+              </th>
+              <th className="px-6 py-3 text-center">
+                <FaTrash className="inline-block mr-2" />
+                Hành động
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -145,16 +146,24 @@ const TeacherList = () => {
                   }`}
               >
                 <td className="px-6 py-3 text-center">{teacher.name}</td>
-                <td className="px-6 py-3 text-center">{teacher.email}</td>
+                <td className="px-6 py-3 text-center">{translateGender(teacher.gender)}</td>
                 <td className="px-6 py-3 text-center">{teacher.phone || "Không có"}</td>
+                <td className="px-6 py-3 text-center">
+                  {teacher.dob
+                    ? format(new Date(teacher.dob), "dd/MM/yyyy")
+                    : "Không rõ"}
+                </td>
                 <td className="px-6 py-3 text-center">
                   <div className="flex justify-center items-center space-x-2">
                     <button
                       className="text-blue-500 hover:text-blue-700"
-                      onClick={() => handleViewDetails(teacher)}
+                      onClick={() => {
+                        setSelectedTeacher(teacher);
+                        setIsDetailsPopupOpen(true); // Mở popup chi tiết
+                      }}
                       title="Xem"
                     >
-                      <FaChalkboardTeacher />
+                      <FaUser />
                     </button>
                     <button
                       className="text-green-500 hover:text-green-700"
@@ -168,7 +177,7 @@ const TeacherList = () => {
                       onClick={() => handleOpenDeletePopup(teacher)}
                       title="Xóa"
                     >
-                      🗑️
+                      <FaTrash />
                     </button>
                   </div>
                 </td>
@@ -178,59 +187,98 @@ const TeacherList = () => {
         </table>
       </div>
 
-      {/* Popup xem chi tiết */}
-      {selectedTeacher && (
-        <TeacherDetails teacher={selectedTeacher} onClose={handleCloseDetails} />
-      )}
-
       {/* Popup thêm giáo viên */}
       {isAddPopupOpen && (
-        <TeacherAdd onClose={handleCloseAddPopup} onTeacherAdded={handleTeacherAdded} />
+        <TeacherAdd
+          onClose={handleCloseAddPopup}
+          onTeacherAdded={(newTeacher) =>
+            setTeachers((prev) => [...prev, newTeacher])
+          }
+        />
       )}
 
       {/* Popup chỉnh sửa giáo viên */}
       {isEditPopupOpen && (
         <TeacherEdit
-          teacher={editingTeacher}
+          teacher={selectedTeacher}
           onClose={handleCloseEditPopup}
-          onTeacherUpdated={handleTeacherUpdated}
+          onTeacherUpdated={(updatedTeacher) =>
+            setTeachers((prev) =>
+              prev.map((t) =>
+                t._id === updatedTeacher._id ? updatedTeacher : t
+              )
+            )
+          }
         />
       )}
 
       {/* Popup xác nhận xóa giáo viên */}
       {isDeletePopupOpen && (
         <div className="fixed inset-0 flex items-center justify-center z-50">
-          {/* Nền trong suốt */}
           <div
             className="absolute inset-0"
             style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
             onClick={handleCloseDeletePopup}
           ></div>
-          {/* Popup */}
           <div className="relative bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-            {/* Tiêu đề */}
-            <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
-              Xác nhận xóa
+            <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center flex items-center justify-center space-x-3">
+              <FaTrash className="text-red-500" />
+              <span>Xác nhận xóa</span>
             </h2>
             <p className="text-gray-700 mb-6 text-center">
               Bạn có chắc chắn muốn xóa giáo viên với thông tin sau không?
             </p>
-            {/* Thông tin giáo viên */}
             <div className="text-gray-700 space-y-4">
               <div className="flex justify-between border-b border-gray-300 pb-2">
-                <span className="font-medium text-gray-700">Tên:</span>
+                <span className="font-medium text-gray-700 flex items-center">
+                  <div className="bg-blue-500 text-white text-xl flex-shrink-0 rounded-full p-2 mr-2">
+                    <FaUser />
+                  </div>
+                  Tên giáo viên:
+                </span>
                 <span className="text-gray-800">{deletingTeacher?.name || "Không rõ"}</span>
               </div>
               <div className="flex justify-between border-b border-gray-300 pb-2">
-                <span className="font-medium text-gray-700">Email:</span>
+                <span className="font-medium text-gray-700 flex items-center">
+                  <div className="bg-green-500 text-white text-xl flex-shrink-0 rounded-full p-2 mr-2">
+                    <FaEnvelope />
+                  </div>
+                  Email:
+                </span>
                 <span className="text-gray-800">{deletingTeacher?.email || "Không có"}</span>
               </div>
               <div className="flex justify-between border-b border-gray-300 pb-2">
-                <span className="font-medium text-gray-700">Số điện thoại:</span>
+                <span className="font-medium text-gray-700 flex items-center">
+                  <div className="bg-yellow-500 text-white text-xl flex-shrink-0 rounded-full p-2 mr-2">
+                    <FaPhone />
+                  </div>
+                  Số điện thoại:
+                </span>
                 <span className="text-gray-800">{deletingTeacher?.phone || "Không có"}</span>
               </div>
+              <div className="flex justify-between border-b border-gray-300 pb-2">
+                <span className="font-medium text-gray-700 flex items-center">
+                  <div className="bg-pink-500 text-white text-xl flex-shrink-0 rounded-full p-2 mr-2">
+                    <FaVenusMars />
+                  </div>
+                  Giới tính:
+                </span>
+                <span className="text-gray-800">{translateGender(deletingTeacher?.gender)}</span>
+              </div>
+              <div className="flex justify-between border-b border-gray-300 pb-2">
+                <span className="font-medium text-gray-700 flex items-center">
+                  <div className="bg-purple-500 text-white text-xl flex-shrink-0 rounded-full p-2 mr-2">
+                    <FaCalendarAlt />
+                  </div>
+                  Ngày sinh:
+                </span>
+                <span className="text-gray-800">
+                  {deletingTeacher?.dob
+                    ? format(new Date(deletingTeacher.dob), "dd/MM/yyyy")
+                    : "Không rõ"}
+                </span>
+              </div>
             </div>
-            {/* Nút hành động */}
             <div className="flex justify-center space-x-4 mt-6">
               <button
                 className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
@@ -247,6 +295,14 @@ const TeacherList = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Popup chi tiết giáo viên */}
+      {isDetailsPopupOpen && (
+        <TeacherDetails
+          teacher={selectedTeacher}
+          onClose={() => setIsDetailsPopupOpen(false)}
+        />
       )}
     </div>
   );

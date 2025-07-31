@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import './App.css';
 import Login from "./components/Login";
 import Register from "./components/Register";
@@ -13,6 +13,8 @@ function App() {
   return (
     <Router>
       <Routes>
+        {/* Redirect từ đường dẫn gốc (/) đến /login */}
+        <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/home" element={<Home />} />
@@ -20,7 +22,6 @@ function App() {
         <Route path="/classes" element={<ClassList />} />
         <Route path="/teachers" element={<TeacherList />} />
         <Route path="/subjects" element={<SubjectList />} />
-        <Route path="*" element={<div>404 Not Found</div>} />
       </Routes>
     </Router>
   );

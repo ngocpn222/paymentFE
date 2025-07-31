@@ -1,7 +1,20 @@
 import React from "react";
-import { FaTimes } from "react-icons/fa";
+import { FaTimes, FaUser, FaEnvelope, FaPhone, FaVenusMars, FaCalendarAlt, FaChalkboard } from "react-icons/fa";
 
 const TeacherDetails = ({ teacher, onClose }) => {
+  const translateGender = (gender) => {
+    switch (gender) {
+      case "Male":
+        return "Nam";
+      case "Female":
+        return "Nữ";
+      case "Other":
+        return "Khác";
+      default:
+        return "Không rõ";
+    }
+  };
+
   return (
     <div className="fixed inset-0 flex justify-center items-center z-50">
       {/* Nền trong suốt */}
@@ -19,21 +32,89 @@ const TeacherDetails = ({ teacher, onClose }) => {
         >
           <FaTimes className="text-gray-500 hover:text-red-500 transition" />
         </button>
-        <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
-          Chi tiết giáo viên
+        {/* Tiêu đề có icon */}
+        <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center flex items-center justify-center space-x-3">
+          <FaUser className="text-blue-500" />
+          <span>Chi tiết giáo viên</span>
         </h2>
         <div className="text-gray-700 space-y-4">
-          <div className="flex justify-between border-b border-gray-300 pb-2">
-            <span className="font-medium text-gray-700">Tên:</span>
+          {/* Tên giáo viên */}
+          <div className="flex justify-between items-center border-b border-gray-300 pb-2">
+            <span className="font-medium text-gray-700 flex items-center">
+              <div className="bg-blue-500 text-white text-xl flex-shrink-0 rounded-full p-2 mr-2">
+                <FaUser />
+              </div>
+              Tên giáo viên:
+            </span>
             <span className="text-gray-800">{teacher?.name || "Không rõ"}</span>
           </div>
-          <div className="flex justify-between border-b border-gray-300 pb-2">
-            <span className="font-medium text-gray-700">Email:</span>
+          {/* Email */}
+          <div className="flex justify-between items-center border-b border-gray-300 pb-2">
+            <span className="font-medium text-gray-700 flex items-center">
+              <div className="bg-green-500 text-white text-xl flex-shrink-0 rounded-full p-2 mr-2">
+                <FaEnvelope />
+              </div>
+              Email:
+            </span>
             <span className="text-gray-800">{teacher?.email || "Không có"}</span>
           </div>
-          <div className="flex justify-between border-b border-gray-300 pb-2">
-            <span className="font-medium text-gray-700">Số điện thoại:</span>
+          {/* Số điện thoại */}
+          <div className="flex justify-between items-center border-b border-gray-300 pb-2">
+            <span className="font-medium text-gray-700 flex items-center">
+              <div className="bg-yellow-500 text-white text-xl flex-shrink-0 rounded-full p-2 mr-2">
+                <FaPhone />
+              </div>
+              Số điện thoại:
+            </span>
             <span className="text-gray-800">{teacher?.phone || "Không có"}</span>
+          </div>
+          {/* Giới tính */}
+          <div className="flex justify-between items-center border-b border-gray-300 pb-2">
+            <span className="font-medium text-gray-700 flex items-center">
+              <div className="bg-pink-500 text-white text-xl flex-shrink-0 rounded-full p-2 mr-2">
+                <FaVenusMars />
+              </div>
+              Giới tính:
+            </span>
+            <span className="text-gray-800">{translateGender(teacher?.gender)}</span>
+          </div>
+          {/* Ngày sinh */}
+          <div className="flex justify-between items-center border-b border-gray-300 pb-2">
+            <span className="font-medium text-gray-700 flex items-center">
+              <div className="bg-purple-500 text-white text-xl flex-shrink-0 rounded-full p-2 mr-2">
+                <FaCalendarAlt />
+              </div>
+              Ngày sinh:
+            </span>
+            <span className="text-gray-800">
+              {teacher?.dob
+                ? new Date(teacher.dob).toLocaleDateString("vi-VN", {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "numeric",
+                })
+                : "Không rõ"}
+            </span>
+          </div>
+          {/* Các lớp dạy */}
+          <div className="flex justify-between items-start border-b border-gray-300 pb-2">
+            <span className="font-medium text-gray-700 flex items-center">
+              <div className="bg-blue-500 text-white text-xl flex-shrink-0 rounded-full p-2 mr-2">
+                <FaChalkboard />
+              </div>
+              Các lớp dạy:
+            </span>
+            <span className="text-gray-800">
+              {teacher?.classes && teacher.classes.length > 0 ? (
+                <ul className="list-disc list-inside">
+                  {teacher.classes.map((cls) => (
+                    <li key={cls._id}>{cls.name}</li>
+                  ))}
+                </ul>
+              ) : (
+                "Không có lớp nào"
+              )}
+            </span>
           </div>
         </div>
         {/* Nút đóng */}

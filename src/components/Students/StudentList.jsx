@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { getStudents, deleteStudent } from "../../services/studentService";
 import StudentDetails from "./StudentDetails";
 import StudentAdd from "./StudentAdd";
-import { FaUserGraduate, FaPlus } from "react-icons/fa"; // Import các icon từ react-icons
-import StudentEdit from "./StudentEdit"; // Import component chỉnh sửa học sinh
-import { format } from "date-fns"; // Import thư viện date-fns
+import StudentEdit from "./StudentEdit";
+import { FaUserGraduate, FaPlus, FaUser, FaChalkboardTeacher, FaVenusMars, FaPhone, FaCalendarAlt, FaTrash } from "react-icons/fa"; // Import thêm icon FaTrash
+import { format } from "date-fns";
 
 const StudentList = () => {
   const [students, setStudents] = useState([]);
@@ -48,7 +48,7 @@ const StudentList = () => {
   };
 
   const handleStudentAdded = (newStudent) => {
-    setStudents((prevStudents) => [...prevStudents, newStudent]); // Cập nhật danh sách
+    setStudents((prevStudents) => [...prevStudents, newStudent]);
   };
 
   const handleOpenEditPopup = (student) => {
@@ -87,8 +87,8 @@ const StudentList = () => {
 
   const handleDeleteStudent = async () => {
     try {
-      await deleteStudent(deletingStudent._id); // Gọi API xóa
-      handleStudentDeleted(deletingStudent._id); // Cập nhật danh sách
+      await deleteStudent(deletingStudent._id);
+      handleStudentDeleted(deletingStudent._id);
       handleCloseDeletePopup();
     } catch (error) {
       console.error("Error deleting student:", error);
@@ -116,7 +116,7 @@ const StudentList = () => {
       {/* Nút thêm */}
       <div className="flex justify-end mb-6">
         <button
-          className="flex items-center bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition shadow-md"
+          className="flex items-center bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition shadow-md"
           onClick={handleOpenAddPopup}
         >
           <FaPlus className="mr-2" />
@@ -130,27 +130,27 @@ const StudentList = () => {
           <thead>
             <tr className="bg-blue-100 text-gray-700">
               <th className="px-6 py-3 text-center">
-                <FaUserGraduate className="inline-block mr-2" />
+                <FaUser className="inline-block mr-2" />
                 Tên
               </th>
               <th className="px-6 py-3 text-center">
-                <FaPlus className="inline-block mr-2" />
+                <FaChalkboardTeacher className="inline-block mr-2" />
                 Lớp
               </th>
               <th className="px-6 py-3 text-center">
-                <span className="inline-block mr-2">⚥</span>
+                <FaVenusMars className="inline-block mr-2" />
                 Giới tính
               </th>
               <th className="px-6 py-3 text-center">
-                <span className="inline-block mr-2">📞</span>
+                <FaPhone className="inline-block mr-2" />
                 Số điện thoại
               </th>
               <th className="px-6 py-3 text-center">
-                <span className="inline-block mr-2">📅</span>
+                <FaCalendarAlt className="inline-block mr-2" />
                 Ngày sinh
               </th>
               <th className="px-6 py-3 text-center">
-                <span className="inline-block mr-2">⚙️</span>
+                <FaTrash className="inline-block mr-2" />
                 Hành động
               </th>
             </tr>
@@ -159,8 +159,9 @@ const StudentList = () => {
             {students.map((student, index) => (
               <tr
                 key={student._id}
-                className={`text-gray-700 hover:bg-gray-100 ${index % 2 === 0 ? "bg-gray-50" : "bg-white"
-                  }`}
+                className={`text-gray-700 hover:bg-gray-100 ${
+                  index % 2 === 0 ? "bg-gray-50" : "bg-white"
+                }`}
               >
                 <td className="px-6 py-3 text-center">{student.name}</td>
                 <td className="px-6 py-3 text-center">
@@ -194,7 +195,7 @@ const StudentList = () => {
                       onClick={() => handleOpenDeletePopup(student)}
                       title="Xóa"
                     >
-                      🗑️
+                      <FaTrash />
                     </button>
                   </div>
                 </td>
@@ -234,9 +235,10 @@ const StudentList = () => {
           ></div>
           {/* Popup */}
           <div className="relative bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-            {/* Tiêu đề */}
-            <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
-              Xác nhận xóa
+            {/* Tiêu đề có icon */}
+            <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center flex items-center justify-center space-x-3">
+              <FaTrash className="text-red-500" />
+              <span>Xác nhận xóa</span>
             </h2>
             <p className="text-gray-700 mb-6 text-center">
               Bạn có chắc chắn muốn xóa học sinh với thông tin sau không?
@@ -244,23 +246,33 @@ const StudentList = () => {
             {/* Thông tin học sinh */}
             <div className="text-gray-700 space-y-4">
               <div className="flex justify-between border-b border-gray-300 pb-2">
-                <span className="font-medium text-gray-700">Tên:</span>
+                <span className="font-medium text-gray-700 flex items-center">
+                  <FaUser className="mr-2 text-blue-500" /> Tên:
+                </span>
                 <span className="text-gray-800">{deletingStudent?.name || "Không rõ"}</span>
               </div>
               <div className="flex justify-between border-b border-gray-300 pb-2">
-                <span className="font-medium text-gray-700">Lớp:</span>
+                <span className="font-medium text-gray-700 flex items-center">
+                  <FaChalkboardTeacher className="mr-2 text-green-500" /> Lớp:
+                </span>
                 <span className="text-gray-800">{deletingStudent?.classId?.name || "Chưa phân lớp"}</span>
               </div>
               <div className="flex justify-between border-b border-gray-300 pb-2">
-                <span className="font-medium text-gray-700">Giới tính:</span>
+                <span className="font-medium text-gray-700 flex items-center">
+                  <FaVenusMars className="mr-2 text-pink-500" /> Giới tính:
+                </span>
                 <span className="text-gray-800">{deletingStudent?.gender || "Không rõ"}</span>
               </div>
               <div className="flex justify-between border-b border-gray-300 pb-2">
-                <span className="font-medium text-gray-700">Số điện thoại:</span>
+                <span className="font-medium text-gray-700 flex items-center">
+                  <FaPhone className="mr-2 text-yellow-500" /> Số điện thoại:
+                </span>
                 <span className="text-gray-800">{deletingStudent?.phone || "Không có"}</span>
               </div>
               <div className="flex justify-between border-b border-gray-300 pb-2">
-                <span className="font-medium text-gray-700">Ngày sinh:</span>
+                <span className="font-medium text-gray-700 flex items-center">
+                  <FaCalendarAlt className="mr-2 text-purple-500" /> Ngày sinh:
+                </span>
                 <span className="text-gray-800">
                   {deletingStudent?.dob
                     ? new Date(deletingStudent.dob).toLocaleDateString("vi-VN")

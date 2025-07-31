@@ -42,7 +42,7 @@ const AddClass = ({ onClose, onClassAdded }) => {
           <FaTimes className="text-gray-500 hover:text-red-500 transition" />
         </button>
         <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center flex items-center justify-center space-x-3">
-          <FaChalkboardTeacher className="text-blue-500" />
+          <FaChalkboardTeacher className="text-indigo-500" />
           <span>Thêm lớp học mới</span>
         </h1>
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -52,7 +52,7 @@ const AddClass = ({ onClose, onClassAdded }) => {
               Tên lớp
             </label>
             <div className="flex items-center space-x-4">
-              <div className="bg-blue-500 text-white text-xl flex-shrink-0 rounded-full p-2">
+              <div className="bg-indigo-500 text-white text-xl flex-shrink-0 rounded-full p-2">
                 <FaChalkboardTeacher />
               </div>
               <input
@@ -60,7 +60,7 @@ const AddClass = ({ onClose, onClassAdded }) => {
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 placeholder="Nhập tên lớp"
                 required
               />
@@ -73,14 +73,14 @@ const AddClass = ({ onClose, onClassAdded }) => {
               Mô tả
             </label>
             <div className="flex items-center space-x-4">
-              <div className="bg-blue-500 text-white text-xl flex-shrink-0 rounded-full p-2">
+              <div className="bg-green-500 text-white text-xl flex-shrink-0 rounded-full p-2">
                 <FaInfoCircle />
               </div>
               <textarea
                 name="description"
                 value={formData.description}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                 placeholder="Nhập mô tả lớp học"
               />
             </div>
@@ -89,7 +89,7 @@ const AddClass = ({ onClose, onClassAdded }) => {
           {/* Nút thêm lớp */}
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300"
+            className="w-full bg-indigo-500 text-white py-2 rounded-lg hover:bg-indigo-600 transition duration-300"
           >
             Thêm lớp học
           </button>

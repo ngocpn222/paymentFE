@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getStudentById } from "../../services/studentService";
-import { FaTimes } from "react-icons/fa"; // Import icon FaTimes
+import { FaTimes, FaUserGraduate, FaUser, FaChalkboardTeacher, FaVenusMars, FaPhone, FaCalendarAlt } from "react-icons/fa"; // Import thêm icon FaUserGraduate
 import { format } from "date-fns";
 
 const StudentDetails = ({ student, onClose }) => {
@@ -44,13 +44,17 @@ const StudentDetails = ({ student, onClose }) => {
         >
           <FaTimes className="text-gray-500 hover:text-red-500 transition" />
         </button>
-        <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
-          Chi tiết học sinh
+        {/* Tiêu đề có icon */}
+        <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center flex items-center justify-center space-x-3">
+          <FaUserGraduate className="text-blue-500" />
+          <span>Chi tiết học sinh</span>
         </h1>
 
         {/* Tên học sinh */}
         <div className="flex justify-between items-center border-b border-gray-300 py-2">
-          <span className="text-lg font-medium text-gray-700">Tên học sinh:</span>
+          <span className="text-lg font-medium text-gray-700 flex items-center">
+            <FaUser className="mr-2 text-blue-500" /> Tên học sinh:
+          </span>
           <span className="text-lg text-gray-800">
             {studentData.name || "Không rõ"}
           </span>
@@ -58,7 +62,9 @@ const StudentDetails = ({ student, onClose }) => {
 
         {/* Lớp */}
         <div className="flex justify-between items-center border-b border-gray-300 py-2">
-          <span className="text-lg font-medium text-gray-700">Lớp:</span>
+          <span className="text-lg font-medium text-gray-700 flex items-center">
+            <FaChalkboardTeacher className="mr-2 text-green-500" /> Lớp:
+          </span>
           <span className="text-lg text-gray-800">
             {studentData.classId?.name || "Chưa phân lớp"}
           </span>
@@ -66,7 +72,9 @@ const StudentDetails = ({ student, onClose }) => {
 
         {/* Giới tính */}
         <div className="flex justify-between items-center border-b border-gray-300 py-2">
-          <span className="text-lg font-medium text-gray-700">Giới tính:</span>
+          <span className="text-lg font-medium text-gray-700 flex items-center">
+            <FaVenusMars className="mr-2 text-pink-500" /> Giới tính:
+          </span>
           <span className="text-lg text-gray-800">
             {studentData.gender || "Không rõ"}
           </span>
@@ -74,7 +82,9 @@ const StudentDetails = ({ student, onClose }) => {
 
         {/* Số điện thoại */}
         <div className="flex justify-between items-center border-b border-gray-300 py-2">
-          <span className="text-lg font-medium text-gray-700">Số điện thoại:</span>
+          <span className="text-lg font-medium text-gray-700 flex items-center">
+            <FaPhone className="mr-2 text-yellow-500" /> Số điện thoại:
+          </span>
           <span className="text-lg text-gray-800">
             {studentData.phone || "Không có"}
           </span>
@@ -82,7 +92,9 @@ const StudentDetails = ({ student, onClose }) => {
 
         {/* Ngày sinh */}
         <div className="flex justify-between items-center border-b border-gray-300 py-2">
-          <span className="text-lg font-medium text-gray-700">Ngày sinh:</span>
+          <span className="text-lg font-medium text-gray-700 flex items-center">
+            <FaCalendarAlt className="mr-2 text-purple-500" /> Ngày sinh:
+          </span>
           <span className="text-lg text-gray-800">
             {studentData.dob ? format(new Date(studentData.dob), "dd/MM/yyyy") : "Không rõ"}
           </span>

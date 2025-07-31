@@ -25,6 +25,7 @@ export const getTeacherById = async (id) => {
 // Thêm giáo viên mới
 export const addTeacher = async (teacherData) => {
   try {
+    console.log("Adding teacher with data:", teacherData);
     const response = await api.post("/teachers", teacherData);
     return response.data;
   } catch (error) {
