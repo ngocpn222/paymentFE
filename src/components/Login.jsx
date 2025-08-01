@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
-
+import { fetchAndStoreStudentId } from "../services/studentService";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -12,9 +12,11 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await api.post("/auth/login", { email, password });
+
       // Lưu token và email vào localStorage
       localStorage.setItem("token", response.data.token);
-      localStorage.setItem("email", email); 
+      localStorage.setItem("email", email);
+
       navigate("/home");
     } catch (err) {
       setError(err.response?.data?.message || "Đăng nhập thất bại");

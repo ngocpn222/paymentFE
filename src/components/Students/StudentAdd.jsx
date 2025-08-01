@@ -1,7 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { addStudent } from "../../services/studentService";
 import { getClasses } from "../../services/classService";
-import { FaTimes, FaUser, FaChalkboardTeacher, FaVenusMars, FaPhone, FaCalendarAlt, FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
+import {
+  FaTimes,
+  FaUser,
+  FaChalkboardTeacher,
+  FaVenusMars,
+  FaPhone,
+  FaCalendarAlt,
+  FaEnvelope,
+  FaLock,
+  FaEye,
+  FaEyeSlash,
+} from "react-icons/fa";
 
 const StudentAdd = ({ onClose, onStudentAdded }) => {
   const [formData, setFormData] = useState({
@@ -10,12 +21,10 @@ const StudentAdd = ({ onClose, onStudentAdded }) => {
     gender: "",
     phone: "",
     dob: "",
-    gmail: "",
-    password: "",
+    email: "",
   });
   const [classes, setClasses] = useState([]);
   const [message, setMessage] = useState("");
-  const [showPassword, setShowPassword] = useState(false); // Trạng thái ẩn/hiện mật khẩu
 
   useEffect(() => {
     const fetchClasses = async () => {
@@ -43,7 +52,10 @@ const StudentAdd = ({ onClose, onStudentAdded }) => {
       onStudentAdded();
       onClose();
     } catch (error) {
-      console.error("Error adding student:", error.response?.data || error.message);
+      console.error(
+        "Error adding student:",
+        error.response?.data || error.message
+      );
       setMessage("Có lỗi xảy ra khi thêm học sinh.");
     }
   };
@@ -68,8 +80,9 @@ const StudentAdd = ({ onClose, onStudentAdded }) => {
         </h1>
         {message && (
           <p
-            className={`text-center mb-4 ${message.includes("thành công") ? "text-green-600" : "text-red-600"
-              }`}
+            className={`text-center mb-4 ${
+              message.includes("thành công") ? "text-green-600" : "text-red-600"
+            }`}
           >
             {message}
           </p>
@@ -194,41 +207,13 @@ const StudentAdd = ({ onClose, onStudentAdded }) => {
               </div>
               <input
                 type="email"
-                name="gmail"
-                value={formData.gmail}
+                name="email"
+                value={formData.email}
                 onChange={handleChange}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Nhập Gmail"
                 required
               />
-            </div>
-          </div>
-
-          {/* Mật khẩu */}
-          <div>
-            <label className="block text-lg font-medium text-gray-700 mb-2">
-              Mật khẩu
-            </label>
-            <div className="flex items-center space-x-2 border border-gray-300 rounded-lg px-3 py-2 focus-within:ring-2 focus-within:ring-blue-500">
-              <div className="text-gray-500">
-                <FaLock />
-              </div>
-              <input
-                type={showPassword ? "text" : "password"} // Thay đổi type dựa trên trạng thái
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                className="w-full focus:outline-none"
-                placeholder="Nhập mật khẩu"
-                required
-              />
-              <button
-                type="button"
-                className="text-gray-500 hover:text-gray-700"
-                onClick={() => setShowPassword(!showPassword)} // Đổi trạng thái ẩn/hiện
-              >
-                {showPassword ? <FaEyeSlash /> : <FaEye />}
-              </button>
             </div>
           </div>
 

@@ -1,59 +1,58 @@
 import React, { useState, useEffect } from "react";
 import { FaTimes, FaUserGraduate, FaBook } from "react-icons/fa";
 import { addRegisteredSubject } from "../../services/registeredSubjectService";
-import { getStudents } from "../../services/studentService";
 import { getSubjects } from "../../services/subjectService";
 
 const AddRegisteredSubject = ({ onClose, onSuccess }) => {
-  const [students, setStudents] = useState([]);
   const [subjects, setSubjects] = useState([]);
   const [formData, setFormData] = useState({
-    studentId: "",
     selectedSubjects: [],
   });
   const [loading, setLoading] = useState(false);
+  const [studentId, setStudentId] = useState("");
+  console.log("Thông tin sinh viên đang đăng nhập:", studentId);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const studentData = await getStudents();
         const subjectData = await getSubjects();
-        setStudents(studentData);
         setSubjects(subjectData);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching subjects:", error);
       }
     };
 
     fetchData();
   }, []);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
   const toggleSubjectSelection = (subjectId) => {
     setFormData((prevData) => ({
       ...prevData,
       selectedSubjects: prevData.selectedSubjects.includes(subjectId)
-        ? prevData.selectedSubjects.filter((id) => id !== subjectId) // Bỏ chọn nếu đã được chọn
-        : [...prevData.selectedSubjects, subjectId], // Thêm vào danh sách nếu chưa được chọn
+        ? prevData.selectedSubjects.filter((id) => id !== subjectId)
+        : [...prevData.selectedSubjects, subjectId],
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!studentId) {
+      alert("Vui lòng nhập studentId.");
+      return;
+    }
+
     setLoading(true);
     try {
-      for (const subjectId of formData.selectedSubjects) {
-        await addRegisteredSubject({ student: formData.studentId, subject: subjectId });
-      }
+      await addRegisteredSubject({
+        studentId: studentId,
+        subjectIds: formData.selectedSubjects,
+      });
       alert("Đăng ký môn học thành công!");
       onSuccess();
       onClose();
     } catch (error) {
       alert("Đăng ký môn học thất bại!");
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -61,65 +60,49 @@ const AddRegisteredSubject = ({ onClose, onSuccess }) => {
 
   return (
     <div className="fixed inset-0 flex justify-center items-center z-50">
-      {/* Nền trong suốt */}
       <div
-        className="absolute inset-0"
-        style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
+        className="absolute inset-0 bg-black bg-opacity-50"
         onClick={onClose}
       ></div>
-      {/* Form thêm đăng ký môn học */}
-      <div className="relative bg-white bg-opacity-90 p-8 rounded-lg shadow-lg w-full max-w-lg">
-        {/* Nút đóng */}
+      <div className="relative bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
         <button
-          className="absolute top-2 right-2 w-8 h-8 border border-gray-300 rounded-full flex items-center justify-center hover:bg-gray-100 transition"
+          className="absolute top-2 right-2 w-8 h-8 border border-gray-300 rounded-full flex items-center justify-center hover:bg-gray-100"
           onClick={onClose}
         >
-          <FaTimes className="text-gray-500 hover:text-red-500 transition" />
+          <FaTimes className="text-gray-500 hover:text-red-500" />
         </button>
-        <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center flex items-center justify-center space-x-3">
-          <FaUserGraduate className="text-indigo-500" />
-          <span>Thêm đăng ký môn học</span>
+        <h1 className="text-2xl font-bold text-center mb-4">
+          <FaBook className="inline mr-2 text-indigo-500" />
+          Đăng ký môn học
         </h1>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Chọn sinh viên */}
-          <div>
-            <label className="block text-lg font-medium text-gray-700 mb-2">
-              Sinh viên
-            </label>
-            <div className="flex items-center space-x-4">
-              <div className="bg-indigo-500 text-white text-xl flex-shrink-0 rounded-full p-2">
-                <FaUserGraduate />
-              </div>
-              <select
-                name="studentId"
-                value={formData.studentId}
-                onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                required
-              >
-                <option value="">Chọn sinh viên</option>
-                {students.map((student) => (
-                  <option key={student._id} value={student._id}>
-                    {student.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
 
-          {/* Chọn môn học */}
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-lg font-medium text-gray-700 mb-2">
-              Môn học
+            <label className="block mb-2 text-gray-700 font-semibold">
+              Nhập studentId
+            </label>
+            <input
+              type="text"
+              value={studentId}
+              onChange={(e) => setStudentId(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              placeholder="Nhập studentId"
+              required
+            />
+          </div>
+          <div>
+            <label className="block mb-2 text-gray-700 font-semibold">
+              Chọn môn học
             </label>
             <div className="grid grid-cols-2 gap-4">
               {subjects.map((subject) => (
                 <div
                   key={subject._id}
-                  className={`p-4 border rounded-lg cursor-pointer ${formData.selectedSubjects.includes(subject._id)
+                  className={`p-3 border rounded cursor-pointer ${
+                    formData.selectedSubjects.includes(subject._id)
                       ? "bg-blue-500 text-white"
                       : "bg-gray-100"
-                    }`}
+                  }`}
                   onClick={() => toggleSubjectSelection(subject._id)}
                 >
                   {subject.name}
@@ -127,14 +110,14 @@ const AddRegisteredSubject = ({ onClose, onSuccess }) => {
               ))}
             </div>
           </div>
-
-          {/* Nút thêm */}
           <button
             type="submit"
-            className="w-full bg-indigo-500 text-white py-2 rounded-lg hover:bg-indigo-600 transition duration-300"
-            disabled={loading || !formData.studentId || formData.selectedSubjects.length === 0}
+            className="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700"
+            disabled={
+              loading || formData.selectedSubjects.length === 0 || !studentId
+            }
           >
-            {loading ? "Đang xử lý..." : "Thêm đăng ký"}
+            {loading ? "Đang xử lý..." : "Đăng ký"}
           </button>
         </form>
       </div>

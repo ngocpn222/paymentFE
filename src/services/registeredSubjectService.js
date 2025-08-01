@@ -1,34 +1,104 @@
 import api from "./api";
+import { jwtDecode } from "jwt-decode";
 
-// Thêm đăng ký môn học
-export const addRegisteredSubject = async (data) => {
+// ==== TIỆN ÍCH AUTH ==== //
+const getToken = () => localStorage.getItem("token");
+
+const getAuthHeader = () => {
+  const token = getToken();
+  return {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+};
+
+const getStudentIdFromToken = () => {
+  const token = getToken();
+  if (!token) return null;
+
   try {
-    const response = await api.post("/registered-subjects", data);
+    const decoded = jwtDecode(token);
+    console.log("Thông tin sinh viên đang đăng nhập:", decoded);
+    return decoded.userId || decoded.id || decoded.studentId || null;
+  } catch (error) {
+    console.error("Invalid token", error);
+    return null;
+  }
+};
+
+// ==== API GỌI TỚI BACKEND ==== //
+
+// 🟢 Thêm đăng ký nhiều môn học
+export const addRegisteredSubject = async ({ studentId, subjectIds }) => {
+  if (!Array.isArray(subjectIds) || subjectIds.length === 0) {
+    throw new Error("subjectIds must be a non-empty array");
+  }
+  const data = { student: studentId, subjectIds };
+
+  try {
+    const response = await api.post(
+      "/registered-subjects/many",
+      data,
+      getAuthHeader()
+    );
     return response.data;
   } catch (error) {
-    console.error("Error adding registered subject:", error.response?.data || error.message);
+    console.error(
+      "Error adding registered subjects:",
+      error.response?.data || error.message
+    );
     throw error;
   }
 };
 
-// Lấy danh sách đăng ký môn học
+// 🔵 Lấy tất cả đăng ký môn học (toàn bộ - thường dùng cho admin)
 export const getRegisteredSubjects = async () => {
   try {
-    const response = await api.get("/registered-subjects");
+    const response = await api.get("/registered-subjects", getAuthHeader());
     return response.data;
   } catch (error) {
-    console.error("Error fetching registered subjects:", error.response?.data || error.message);
+    console.error(
+      "Error fetching registered subjects:",
+      error.response?.data || error.message
+    );
     throw error;
   }
 };
 
-// Xóa đăng ký môn học
-export const deleteRegisteredSubject = async (id) => {
+// 🟡 Lấy môn học đã đăng ký của 1 student (theo token)
+export const getSubjectsByStudent = async () => {
+  const student = getStudentIdFromToken();
+  if (!student) throw new Error("Unauthorized: missing student id");
+
   try {
-    const response = await api.delete(`/registered-subjects/${id}`);
+    const response = await api.get(
+      `/registered-subjects?student=${student}`,
+      getAuthHeader()
+    );
     return response.data;
   } catch (error) {
-    console.error("Error deleting registered subject:", error.response?.data || error.message);
+    console.error(
+      "Error fetching student registered subjects:",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+};
+
+// 🔴 Xóa đăng ký môn học
+export const deleteRegisteredSubject = async (id) => {
+  try {
+    const response = await api.delete(
+      `/registered-subjects/${id}`,
+      getAuthHeader()
+    );
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Error deleting registered subject:",
+      error.response?.data || error.message
+    );
     throw error;
   }
 };
