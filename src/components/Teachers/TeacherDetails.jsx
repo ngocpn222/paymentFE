@@ -97,24 +97,39 @@ const TeacherDetails = ({ teacher, onClose }) => {
             </span>
           </div>
           {/* Các lớp dạy */}
-          <div className="flex justify-between items-start border-b border-gray-300 pb-2">
-            <span className="font-medium text-gray-700 flex items-center">
+          <div className="border-b border-gray-300 pb-2">
+            <h3 className="font-medium text-gray-700 flex items-center mb-4">
               <div className="bg-blue-500 text-white text-xl flex-shrink-0 rounded-full p-2 mr-2">
                 <FaChalkboard />
               </div>
               Các lớp dạy:
-            </span>
-            <span className="text-gray-800">
-              {teacher?.classes && teacher.classes.length > 0 ? (
-                <ul className="list-disc list-inside">
-                  {teacher.classes.map((cls) => (
-                    <li key={cls._id}>{cls.name}</li>
-                  ))}
-                </ul>
-              ) : (
-                "Không có lớp nào"
-              )}
-            </span>
+            </h3>
+            {teacher?.classIds && teacher.classIds.length > 0 ? (
+              <div className="overflow-x-auto">
+                <table className="w-full bg-white rounded-lg shadow-md overflow-hidden">
+                  <thead>
+                    <tr className="bg-blue-100 text-gray-700">
+                      <th className="px-6 py-3 text-center">STT</th>
+                      <th className="px-6 py-3 text-center">Tên lớp</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {teacher.classIds.map((cls, index) => (
+                      <tr
+                        key={cls._id}
+                        className={`text-gray-700 hover:bg-gray-100 ${index % 2 === 0 ? "bg-gray-50" : "bg-white"
+                          }`}
+                      >
+                        <td className="px-6 py-3 text-center">{index + 1}</td>
+                        <td className="px-6 py-3 text-center">{cls.name}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <p className="text-gray-800">Không có lớp nào</p>
+            )}
           </div>
         </div>
         {/* Nút đóng */}

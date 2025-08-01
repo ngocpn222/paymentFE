@@ -81,6 +81,10 @@ const TeacherList = () => {
     }
   };
 
+  const formatTeacherId = (index) => {
+    return `GV${(index + 1).toString().padStart(3, "0")}`; // Định dạng mã thành GV001, GV002...
+  };
+
   // Hiển thị trạng thái tải
   if (loading) {
     return (
@@ -116,6 +120,7 @@ const TeacherList = () => {
         <table className="w-full bg-white rounded-lg shadow-md overflow-hidden">
           <thead>
             <tr className="bg-blue-100 text-gray-700">
+              <th className="px-6 py-3 text-center">Mã</th> {/* Thêm cột Mã */}
               <th className="px-6 py-3 text-center">
                 <FaUser className="inline-block mr-2" />
                 Tên
@@ -145,6 +150,7 @@ const TeacherList = () => {
                 className={`text-gray-700 hover:bg-gray-100 ${index % 2 === 0 ? "bg-gray-50" : "bg-white"
                   }`}
               >
+                <td className="px-6 py-3 text-center">{formatTeacherId(index)}</td> {/* Hiển thị mã giáo viên */}
                 <td className="px-6 py-3 text-center">{teacher.name}</td>
                 <td className="px-6 py-3 text-center">{translateGender(teacher.gender)}</td>
                 <td className="px-6 py-3 text-center">{teacher.phone || "Không có"}</td>
@@ -159,7 +165,7 @@ const TeacherList = () => {
                       className="text-blue-500 hover:text-blue-700"
                       onClick={() => {
                         setSelectedTeacher(teacher);
-                        setIsDetailsPopupOpen(true); // Mở popup chi tiết
+                        setIsDetailsPopupOpen(true);
                       }}
                       title="Xem"
                     >
@@ -298,7 +304,7 @@ const TeacherList = () => {
       )}
 
       {/* Popup chi tiết giáo viên */}
-      {isDetailsPopupOpen && (
+      {isDetailsPopupOpen && selectedTeacher && (
         <TeacherDetails
           teacher={selectedTeacher}
           onClose={() => setIsDetailsPopupOpen(false)}

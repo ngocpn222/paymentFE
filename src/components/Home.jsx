@@ -1,57 +1,23 @@
-import React, { useState } from "react";
-import Navbar from "./Navbar";
+import React from "react";
 import Header from "./Header";
+import TuitionList from "./Tuition/TuitionList";
 
 const Home = () => {
-  const [isNavbarCollapsed, setIsNavbarCollapsed] = useState(true);
-
-  const handleNavbarToggle = (collapsed) => {
-    setIsNavbarCollapsed(collapsed);
-  };
-
   return (
     <div className="flex h-screen">
-      {/* Navbar */}
-      <Navbar onToggle={handleNavbarToggle} />
-
       {/* Main Content */}
-      <div className="flex-1 flex flex-col ml-[15%]">
+      <div className="flex-1 flex flex-col">
         {/* Header */}
         <Header />
 
         {/* Main Content */}
-        <main
-          className={`bg-gray-100 p-8 transition-all duration-300 mt-16`}
-        >
-          <div className="flex justify-between items-center mb-6">
-            <h1 className="text-2xl font-bold text-gray-800">Priority 1</h1>
-            <button className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition">
-              Add Task
-            </button>
+        <div className="flex flex-col space-y-6 p-4 mt-16">
+          {/* Thẻ dưới */}
+          <div className="ring-6 ring-green-500 p-4 rounded-lg bg-white shadow">
+            <h2 className="text-xl font-bold mb-4">Học phí</h2>
+            <TuitionList />
           </div>
-          <ul className="space-y-4">
-            <li className="flex items-center space-x-4">
-              <input type="checkbox" className="w-5 h-5 text-red-500" />
-              <span className="text-gray-700">10K Run 5 kilometers</span>
-            </li>
-            <li className="flex items-center space-x-4">
-              <input type="checkbox" className="w-5 h-5 text-red-500" />
-              <span className="text-gray-700">
-                Check in with Roxanne RE: sponsorship opportunity
-              </span>
-            </li>
-            <li className="flex items-center space-x-4">
-              <input type="checkbox" className="w-5 h-5 text-red-500" />
-              <span className="text-gray-700">
-                Turn on Time Off & Out of Office auto reply
-              </span>
-            </li>
-            <li className="flex items-center space-x-4">
-              <input type="checkbox" className="w-5 h-5 text-red-500" />
-              <span className="text-gray-700">Update the family budget</span>
-            </li>
-          </ul>
-        </main>
+        </div>
       </div>
     </div>
   );

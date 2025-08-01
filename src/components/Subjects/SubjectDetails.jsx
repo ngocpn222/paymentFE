@@ -25,16 +25,6 @@ const SubjectDetails = ({ subject, onClose }) => {
           <span>Chi tiết môn học</span>
         </h2>
         <div className="text-gray-700 space-y-4">
-          {/* Tên môn học */}
-          <div className="flex justify-between items-center border-b border-gray-300 pb-2">
-            <span className="font-medium text-gray-700 flex items-center">
-              <div className="bg-blue-500 text-white text-xl flex-shrink-0 rounded-full p-2 mr-2">
-                <FaBook />
-              </div>
-              Tên môn học:
-            </span>
-            <span className="text-gray-800">{subject?.name || "Không rõ"}</span>
-          </div>
           {/* Mã môn học */}
           <div className="flex justify-between items-center border-b border-gray-300 pb-2">
             <span className="font-medium text-gray-700 flex items-center">
@@ -44,6 +34,16 @@ const SubjectDetails = ({ subject, onClose }) => {
               Mã môn học:
             </span>
             <span className="text-gray-800">{subject?.code || "Không rõ"}</span>
+          </div>
+          {/* Tên môn học */}
+          <div className="flex justify-between items-center border-b border-gray-300 pb-2">
+            <span className="font-medium text-gray-700 flex items-center">
+              <div className="bg-blue-500 text-white text-xl flex-shrink-0 rounded-full p-2 mr-2">
+                <FaBook />
+              </div>
+              Tên môn học:
+            </span>
+            <span className="text-gray-800">{subject?.name || "Không rõ"}</span>
           </div>
           {/* Mô tả */}
           <div className="flex justify-between items-center border-b border-gray-300 pb-2">

@@ -3,7 +3,7 @@ import { getSubjects, deleteSubject } from "../../services/subjectService";
 import SubjectDetails from "./SubjectDetails";
 import SubjectAdd from "./SubjectAdd";
 import SubjectEdit from "./SubjectEdit";
-import { FaBook, FaPlus, FaCode, FaCreditCard, FaTools } from "react-icons/fa";
+import { FaBook, FaPlus, FaCode, FaCreditCard, FaTools, FaInfoCircle } from "react-icons/fa";
 
 const SubjectList = () => {
   const [subjects, setSubjects] = useState([]);
@@ -130,14 +130,19 @@ const SubjectList = () => {
             <tr className="bg-blue-100 text-gray-700">
               <th className="px-6 py-3 text-center">
                 <div className="flex items-center justify-center space-x-2">
-                  <FaBook />
-                  <span>Tên môn học</span>
+                  <span>STT</span>
                 </div>
               </th>
               <th className="px-6 py-3 text-center">
                 <div className="flex items-center justify-center space-x-2">
                   <FaCode />
                   <span>Mã môn học</span>
+                </div>
+              </th>
+              <th className="px-6 py-3 text-center">
+                <div className="flex items-center justify-center space-x-2">
+                  <FaBook />
+                  <span>Tên môn học</span>
                 </div>
               </th>
               <th className="px-6 py-3 text-center">
@@ -161,8 +166,9 @@ const SubjectList = () => {
                 className={`text-gray-700 hover:bg-gray-100 ${index % 2 === 0 ? "bg-gray-50" : "bg-white"
                   }`}
               >
-                <td className="px-6 py-3 text-center">{subject.name}</td>
+                <td className="px-6 py-3 text-center">{index + 1}</td>
                 <td className="px-6 py-3 text-center">{subject.code}</td>
+                <td className="px-6 py-3 text-center">{subject.name}</td>
                 <td className="px-6 py-3 text-center">{subject.credit}</td>
                 <td className="px-6 py-3 text-center">
                   <div className="flex justify-center items-center space-x-2">
@@ -235,16 +241,8 @@ const SubjectList = () => {
             </p>
             {/* Thông tin môn học */}
             <div className="text-gray-700 space-y-4">
-              <div className="flex justify-between border-b border-gray-300 pb-2">
-                <span className="font-medium text-gray-700 flex items-center">
-                  <div className="bg-blue-500 text-white text-xl flex-shrink-0 rounded-full p-2 mr-2">
-                    <FaBook />
-                  </div>
-                  Tên môn học:
-                </span>
-                <span className="text-gray-800">{deletingSubject?.name || "Không rõ"}</span>
-              </div>
-              <div className="flex justify-between border-b border-gray-300 pb-2">
+              {/* Mã môn học */}
+              <div className="flex justify-between items-center border-b border-gray-300 pb-2">
                 <span className="font-medium text-gray-700 flex items-center">
                   <div className="bg-green-500 text-white text-xl flex-shrink-0 rounded-full p-2 mr-2">
                     <FaCode />
@@ -253,7 +251,28 @@ const SubjectList = () => {
                 </span>
                 <span className="text-gray-800">{deletingSubject?.code || "Không rõ"}</span>
               </div>
-              <div className="flex justify-between border-b border-gray-300 pb-2">
+              {/* Tên môn học */}
+              <div className="flex justify-between items-center border-b border-gray-300 pb-2">
+                <span className="font-medium text-gray-700 flex items-center">
+                  <div className="bg-blue-500 text-white text-xl flex-shrink-0 rounded-full p-2 mr-2">
+                    <FaBook />
+                  </div>
+                  Tên môn học:
+                </span>
+                <span className="text-gray-800">{deletingSubject?.name || "Không rõ"}</span>
+              </div>
+              {/* Mô tả */}
+              <div className="flex justify-between items-center border-b border-gray-300 pb-2">
+                <span className="font-medium text-gray-700 flex items-center">
+                  <div className="bg-yellow-500 text-white text-xl flex-shrink-0 rounded-full p-2 mr-2">
+                    <FaInfoCircle />
+                  </div>
+                  Mô tả:
+                </span>
+                <span className="text-gray-800">{deletingSubject?.description || "Không rõ"}</span>
+              </div>
+              {/* Số tín chỉ */}
+              <div className="flex justify-between items-center border-b border-gray-300 pb-2">
                 <span className="font-medium text-gray-700 flex items-center">
                   <div className="bg-purple-500 text-white text-xl flex-shrink-0 rounded-full p-2 mr-2">
                     <FaCreditCard />

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { addStudent } from "../../services/studentService";
 import { getClasses } from "../../services/classService";
-import { FaTimes, FaUser, FaChalkboardTeacher, FaVenusMars, FaPhone, FaCalendarAlt } from "react-icons/fa"; // Đồng bộ các icon với StudentDetails
+import { FaTimes, FaUser, FaChalkboardTeacher, FaVenusMars, FaPhone, FaCalendarAlt, FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 
 const StudentAdd = ({ onClose, onStudentAdded }) => {
   const [formData, setFormData] = useState({
@@ -10,11 +10,13 @@ const StudentAdd = ({ onClose, onStudentAdded }) => {
     gender: "",
     phone: "",
     dob: "",
+    gmail: "",
+    password: "",
   });
   const [classes, setClasses] = useState([]);
   const [message, setMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // Trạng thái ẩn/hiện mật khẩu
 
-  // Lấy danh sách lớp học khi component được mount
   useEffect(() => {
     const fetchClasses = async () => {
       try {
@@ -48,15 +50,12 @@ const StudentAdd = ({ onClose, onStudentAdded }) => {
 
   return (
     <div className="fixed inset-0 flex justify-center items-center z-50">
-      {/* Nền trong suốt */}
       <div
         className="absolute inset-0"
         style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
         onClick={onClose}
       ></div>
-      {/* Form thêm học sinh */}
-      <div className="relative bg-white bg-opacity-90 p-8 rounded-lg shadow-lg w-full max-w-lg">
-        {/* Nút đóng */}
+      <div className="relative bg-white bg-opacity-90 p-8 rounded-lg shadow-lg w-full max-w-4xl">
         <button
           className="absolute top-2 right-2 w-8 h-8 border border-gray-300 rounded-full flex items-center justify-center hover:bg-gray-100 transition"
           onClick={onClose}
@@ -75,7 +74,7 @@ const StudentAdd = ({ onClose, onStudentAdded }) => {
             {message}
           </p>
         )}
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-6">
           {/* Tên học sinh */}
           <div>
             <label className="block text-lg font-medium text-gray-700 mb-2">
@@ -104,7 +103,7 @@ const StudentAdd = ({ onClose, onStudentAdded }) => {
             </label>
             <div className="flex items-center space-x-4">
               <div className="bg-green-500 text-white text-xl flex-shrink-0 rounded-full p-2">
-                <FaChalkboardTeacher /> {/* Đồng bộ icon */}
+                <FaChalkboardTeacher />
               </div>
               <select
                 name="classId"
@@ -130,7 +129,7 @@ const StudentAdd = ({ onClose, onStudentAdded }) => {
             </label>
             <div className="flex items-center space-x-4">
               <div className="bg-pink-500 text-white text-xl flex-shrink-0 rounded-full p-2">
-                <FaVenusMars /> {/* Đồng bộ icon */}
+                <FaVenusMars />
               </div>
               <select
                 name="gender"
@@ -152,7 +151,7 @@ const StudentAdd = ({ onClose, onStudentAdded }) => {
             </label>
             <div className="flex items-center space-x-4">
               <div className="bg-yellow-500 text-white text-xl flex-shrink-0 rounded-full p-2">
-                <FaPhone /> {/* Đồng bộ icon */}
+                <FaPhone />
               </div>
               <input
                 type="text"
@@ -172,7 +171,7 @@ const StudentAdd = ({ onClose, onStudentAdded }) => {
             </label>
             <div className="flex items-center space-x-4">
               <div className="bg-purple-500 text-white text-xl flex-shrink-0 rounded-full p-2">
-                <FaCalendarAlt /> {/* Đồng bộ icon */}
+                <FaCalendarAlt />
               </div>
               <input
                 type="date"
@@ -184,13 +183,64 @@ const StudentAdd = ({ onClose, onStudentAdded }) => {
             </div>
           </div>
 
+          {/* Gmail */}
+          <div>
+            <label className="block text-lg font-medium text-gray-700 mb-2">
+              Gmail
+            </label>
+            <div className="flex items-center space-x-4">
+              <div className="bg-red-500 text-white text-xl flex-shrink-0 rounded-full p-2">
+                <FaEnvelope />
+              </div>
+              <input
+                type="email"
+                name="gmail"
+                value={formData.gmail}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Nhập Gmail"
+                required
+              />
+            </div>
+          </div>
+
+          {/* Mật khẩu */}
+          <div>
+            <label className="block text-lg font-medium text-gray-700 mb-2">
+              Mật khẩu
+            </label>
+            <div className="flex items-center space-x-2 border border-gray-300 rounded-lg px-3 py-2 focus-within:ring-2 focus-within:ring-blue-500">
+              <div className="text-gray-500">
+                <FaLock />
+              </div>
+              <input
+                type={showPassword ? "text" : "password"} // Thay đổi type dựa trên trạng thái
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                className="w-full focus:outline-none"
+                placeholder="Nhập mật khẩu"
+                required
+              />
+              <button
+                type="button"
+                className="text-gray-500 hover:text-gray-700"
+                onClick={() => setShowPassword(!showPassword)} // Đổi trạng thái ẩn/hiện
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </button>
+            </div>
+          </div>
+
           {/* Nút thêm học sinh */}
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300"
-          >
-            Thêm học sinh
-          </button>
+          <div className="col-span-2">
+            <button
+              type="submit"
+              className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300"
+            >
+              Thêm học sinh
+            </button>
+          </div>
         </form>
       </div>
     </div>
