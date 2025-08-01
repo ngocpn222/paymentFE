@@ -6,6 +6,10 @@ import StudentEdit from "./StudentEdit";
 import { FaUserGraduate, FaPlus, FaUser, FaChalkboardTeacher, FaVenusMars, FaPhone, FaCalendarAlt, FaTrash } from "react-icons/fa"; // Import thêm icon FaTrash
 import { format } from "date-fns";
 
+export const formatStudentId = (index) => {
+  return `SV${(index + 1).toString().padStart(3, "0")}`;
+};
+
 const StudentList = () => {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -129,6 +133,7 @@ const StudentList = () => {
         <table className="w-full bg-white rounded-lg shadow-md overflow-hidden">
           <thead>
             <tr className="bg-blue-100 text-gray-700">
+              <th className="px-6 py-3 text-center">Mã</th>
               <th className="px-6 py-3 text-center">
                 <FaUser className="inline-block mr-2" />
                 Tên
@@ -159,10 +164,10 @@ const StudentList = () => {
             {students.map((student, index) => (
               <tr
                 key={student._id}
-                className={`text-gray-700 hover:bg-gray-100 ${
-                  index % 2 === 0 ? "bg-gray-50" : "bg-white"
-                }`}
+                className={`text-gray-700 hover:bg-gray-100 ${index % 2 === 0 ? "bg-gray-50" : "bg-white"
+                  }`}
               >
+                <td className="px-6 py-3 text-center">{formatStudentId(index)}</td> {/* Hiển thị mã dựa trên index */}
                 <td className="px-6 py-3 text-center">{student.name}</td>
                 <td className="px-6 py-3 text-center">
                   {student.classId?.name || "Chưa phân lớp"}

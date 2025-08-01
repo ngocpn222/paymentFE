@@ -25,10 +25,8 @@ export const getStudentById = async (id) => {
 // Thêm học sinh mới
 export const addStudent = async (studentData) => {
   try {
-    // Kiểm tra dữ liệu trước khi gửi
-    console.log("Adding student with data:", studentData);
     const response = await api.post("/students", studentData);
-    return response.data;
+    return response.data; // Trả về dữ liệu bao gồm tài khoản
   } catch (error) {
     console.error("Error adding student:", error.response?.data || error.message);
     throw error;

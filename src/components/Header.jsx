@@ -1,19 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { FaBell, FaSearch, FaUserCircle } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { FaRegBell, FaSearch } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
 
 const Header = () => {
-  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false); // Trạng thái mở/đóng dropdown
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [email, setEmail] = useState("");
+  const [notifications, setNotifications] = useState([
+    "Thông báo 1: Hạn nộp học phí sắp đến.",
+    "Thông báo 2: Đăng ký môn học mới đã mở.",
+    "Thông báo 3: Cập nhật thông tin cá nhân.",
+  ]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Kiểm tra token trong localStorage để xác định trạng thái đăng nhập
     const token = localStorage.getItem("token");
     if (token) {
       setIsLoggedIn(true);
-      // Lấy email từ localStorage
       const storedEmail = localStorage.getItem("email") || "Người dùng";
       setEmail(storedEmail);
     } else {
@@ -21,27 +25,26 @@ const Header = () => {
     }
   }, []);
 
+  const toggleNotification = () => {
+    setIsNotificationOpen((prevState) => !prevState);
+  };
+
   const toggleUserMenu = () => {
     setIsUserMenuOpen((prevState) => !prevState);
   };
 
   const handleLogout = () => {
-    // Xóa token và email khỏi localStorage
     localStorage.removeItem("token");
     localStorage.removeItem("email");
     setIsLoggedIn(false);
-    navigate("/login"); // Điều hướng về trang đăng nhập
-  };
-
-  const handleLogin = () => {
-    navigate("/login"); // Điều hướng đến trang đăng nhập
+    navigate("/login");
   };
 
   return (
-    <header className="fixed top-0 left-[15%] w-[85%] h-14 bg-white shadow-md z-40">
+    <header className="fixed top-0 left-0 w-full h-14 bg-white shadow-md z-50">
       <div className="max-w-full h-full flex items-center justify-between px-6">
         {/* Search Bar */}
-        <div className="flex items-center bg-gray-100 rounded-full px-4 py-2 w-1/3">
+        <div className="flex items-center bg-gray-100 rounded-full px-4 py-2 w-1/4">
           <FaSearch className="text-gray-500 mr-2" />
           <input
             type="text"
@@ -50,52 +53,116 @@ const Header = () => {
           />
         </div>
 
+        {/* Navigation Links */}
+        <nav className="flex space-x-6">
+          <Link
+            to="/home"
+            className="text-gray-700 hover:text-blue-500 transition"
+          >
+            Trang chủ
+          </Link>
+          <Link
+            to="/students"
+            className="text-gray-700 hover:text-blue-500 transition"
+          >
+            Sinh viên
+          </Link>
+          <Link
+            to="/classes"
+            className="text-gray-700 hover:text-blue-500 transition"
+          >
+            Lớp học
+          </Link>
+          <Link
+            to="/teachers"
+            className="text-gray-700 hover:text-blue-500 transition"
+          >
+            Giáo viên
+          </Link>
+          <Link
+            to="/subjects"
+            className="text-gray-700 hover:text-blue-500 transition"
+          >
+            Môn học
+          </Link>
+          <Link
+            to="/registered-subjects"
+            className="text-gray-700 hover:text-blue-500 transition"
+          >
+            Đăng ký môn học
+          </Link>
+          <Link
+            to="/tuitions"
+            className="text-gray-700 hover:text-blue-500 transition"
+          >
+            Học phí
+          </Link>
+        </nav>
+
         {/* Notification and User */}
         <div className="flex items-center space-x-4">
           {/* Notification Icon */}
-          <button className="relative">
-            <FaBell className="text-gray-500 text-xl hover:text-red-500 transition" />
-            <span className="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
-              3
-            </span>
-          </button>
-
-          {/* Greeting */}
-          {isLoggedIn && (
-            <div className="text-gray-700 text-lg font-semibold">
-              Xin chào, {email}!
-            </div>
-          )}
-
-          {/* User Icon */}
           <div className="relative">
-            <button onClick={toggleUserMenu}>
-              <FaUserCircle className="text-gray-500 text-2xl hover:text-red-500 transition" />
+            <button onClick={toggleNotification} className="relative">
+              <FaRegBell className="text-gray-500 text-xl hover:text-blue-500 transition" />
+              <span className="absolute -top-2 -right-2 bg-blue-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                {notifications.length}
+              </span>
             </button>
 
-            {/* User Menu */}
-            {isUserMenuOpen && (
-              <div className="absolute right-0 mt-2 bg-white shadow-lg rounded-md w-40">
-                <ul className="flex flex-col">
-                  {isLoggedIn ? (
+            {/* Notification Popup */}
+            {isNotificationOpen && (
+              <div className="absolute right-0 mt-2 bg-white shadow-lg rounded-md w-64 z-50">
+                <div className="p-4 border-b">
+                  <h3 className="text-lg font-semibold text-gray-700">
+                    Thông báo
+                  </h3>
+                </div>
+                <ul className="max-h-48 overflow-y-auto">
+                  {notifications.map((notification, index) => (
+                    <li
+                      key={index}
+                      className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm text-gray-600"
+                    >
+                      {notification}
+                    </li>
+                  ))}
+                </ul>
+                <div className="p-4 text-center">
+                  <button
+                    className="text-blue-500 hover:underline text-sm"
+                    onClick={() => setNotifications([])}
+                  >
+                    Xóa tất cả thông báo
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Greeting with Dropdown */}
+          {isLoggedIn && (
+            <div className="relative">
+              <div
+                className="text-gray-700 text-lg font-semibold cursor-pointer hover:text-blue-500 transition"
+                onClick={toggleUserMenu}
+              >
+                Xin chào, {email}!
+              </div>
+              {isUserMenuOpen && (
+                <div className="absolute right-0 mt-2 bg-white shadow-lg rounded-md w-40 z-50">
+                  <ul className="flex flex-col">
                     <li
                       className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                       onClick={handleLogout}
                     >
                       Đăng xuất
                     </li>
-                  ) : (
-                    <li
-                      className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                      onClick={handleLogin}
-                    >
-                      Đăng nhập
-                    </li>
-                  )}
-                </ul>
-              </div>
-            )}
-          </div>
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </header>
