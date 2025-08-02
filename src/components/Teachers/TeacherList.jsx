@@ -27,18 +27,18 @@ const TeacherList = () => {
   const [deletingTeacher, setDeletingTeacher] = useState(null);
 
   // Lấy danh sách giáo viên
-  useEffect(() => {
-    const fetchTeachers = async () => {
-      try {
-        const data = await getTeachers();
-        setTeachers(data);
-      } catch (error) {
-        console.error("Error fetching teachers:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchTeachers = async () => {
+    try {
+      const data = await getTeachers();
+      setTeachers(data);
+    } catch (error) {
+      console.error("Error fetching teachers:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchTeachers();
   }, []);
 
@@ -197,9 +197,10 @@ const TeacherList = () => {
       {isAddPopupOpen && (
         <TeacherAdd
           onClose={handleCloseAddPopup}
-          onTeacherAdded={(newTeacher) =>
-            setTeachers((prev) => [...prev, newTeacher])
-          }
+          onTeacherAdded={() => {
+            fetchTeachers(); // Lấy lại danh sách mới nhất
+            setIsAddPopupOpen(false);
+          }}
         />
       )}
 

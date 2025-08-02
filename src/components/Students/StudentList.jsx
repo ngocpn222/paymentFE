@@ -20,18 +20,21 @@ const StudentList = () => {
   const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
   const [deletingStudent, setDeletingStudent] = useState(null);
 
-  useEffect(() => {
-    const fetchStudents = async () => {
-      try {
-        const data = await getStudents();
-        setStudents(data);
-      } catch (error) {
-        console.error("Error fetching students:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const role = localStorage.getItem("role"); // hoặc lấy từ context nếu có
 
+  // Định nghĩa fetchStudents ở ngoài useEffect để có thể dùng lại
+  const fetchStudents = async () => {
+    try {
+      const data = await getStudents();
+      setStudents(data);
+    } catch (error) {
+      console.error("Error fetching students:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchStudents();
   }, []);
 
@@ -118,15 +121,17 @@ const StudentList = () => {
       </div>
 
       {/* Nút thêm */}
-      <div className="flex justify-end mb-6">
-        <button
-          className="flex items-center bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition shadow-md"
-          onClick={handleOpenAddPopup}
-        >
-          <FaPlus className="mr-2" />
-          Thêm học sinh
-        </button>
-      </div>
+      {role !== "student" && (
+        <div className="flex justify-end mb-6">
+          <button
+            className="flex items-center bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition shadow-md"
+            onClick={handleOpenAddPopup}
+          >
+            <FaPlus className="mr-2" />
+            Thêm học sinh
+          </button>
+        </div>
+      )}
 
       {/* Bảng danh sách học sinh */}
       <div className="overflow-x-auto">
@@ -188,20 +193,24 @@ const StudentList = () => {
                     >
                       <FaUserGraduate />
                     </button>
-                    <button
-                      className="text-green-500 hover:text-green-700"
-                      onClick={() => handleOpenEditPopup(student)}
-                      title="Sửa"
-                    >
-                      <FaPlus />
-                    </button>
-                    <button
-                      className="text-red-500 hover:text-red-700"
-                      onClick={() => handleOpenDeletePopup(student)}
-                      title="Xóa"
-                    >
-                      <FaTrash />
-                    </button>
+                    {role !== "student" && (
+                      <>
+                        <button
+                          className="text-green-500 hover:text-green-700"
+                          onClick={() => handleOpenEditPopup(student)}
+                          title="Sửa"
+                        >
+                          <FaPlus />
+                        </button>
+                        <button
+                          className="text-red-500 hover:text-red-700"
+                          onClick={() => handleOpenDeletePopup(student)}
+                          title="Xóa"
+                        >
+                          <FaTrash />
+                        </button>
+                      </>
+                    )}
                   </div>
                 </td>
               </tr>
@@ -217,7 +226,13 @@ const StudentList = () => {
 
       {/* Popup thêm học sinh */}
       {isAddPopupOpen && (
-        <StudentAdd onClose={handleCloseAddPopup} onStudentAdded={handleStudentAdded} />
+        <StudentAdd
+          onClose={handleCloseAddPopup}
+          onStudentAdded={() => {
+            fetchStudents(); // Gọi lại API lấy danh sách mới nhất
+            setIsAddPopupOpen(false);
+          }}
+        />
       )}
 
       {/* Popup chỉnh sửa học sinh */}

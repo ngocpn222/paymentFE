@@ -15,18 +15,18 @@ const ClassList = () => {
   const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
   const [deletingClass, setDeletingClass] = useState(null);
 
-  useEffect(() => {
-    const fetchClasses = async () => {
-      try {
-        const data = await getClasses();
-        setClasses(data);
-      } catch (error) {
-        console.error("Error fetching classes:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchClasses = async () => {
+    try {
+      const data = await getClasses();
+      setClasses(data);
+    } catch (error) {
+      console.error("Error fetching classes:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchClasses();
   }, []);
 
@@ -194,7 +194,13 @@ const ClassList = () => {
 
       {/* Popup thêm lớp */}
       {isAddPopupOpen && (
-        <AddClass onClose={handleCloseAddPopup} onClassAdded={handleClassAdded} />
+        <AddClass
+          onClose={handleCloseAddPopup}
+          onClassAdded={() => {
+            fetchClasses(); // Lấy lại danh sách mới nhất
+            setIsAddPopupOpen(false);
+          }}
+        />
       )}
 
       {/* Popup chỉnh sửa lớp */}
