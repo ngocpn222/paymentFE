@@ -11,6 +11,7 @@ import SubjectList from "./components/Subjects/SubjectList";
 import RegisteredSubjectPage from "./components/RegisteredSubjects/RegisteredSubjectPage";
 import TuitionList from "./components/Tuition/TuitionList";
 import Footer from "./components/Footer";
+import RequireAuth from "./components/RequireAuth";
 import './App.css';
 
 function AppContent() {
@@ -25,13 +26,64 @@ function AppContent() {
           <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/students" element={<StudentList />} />
-          <Route path="/classes" element={<ClassList />} />
-          <Route path="/teachers" element={<TeacherList />} />
-          <Route path="/subjects" element={<SubjectList />} />
-          <Route path="/registered-subjects" element={<RegisteredSubjectPage />} />
-          <Route path="/tuitions" element={<TuitionList />} />
+
+          {/* Các route còn lại đều phải đăng nhập */}
+          <Route
+            path="/home"
+            element={
+              <RequireAuth>
+                <Home />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/students"
+            element={
+              <RequireAuth>
+                <StudentList />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/classes"
+            element={
+              <RequireAuth>
+                <ClassList />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/teachers"
+            element={
+              <RequireAuth>
+                <TeacherList />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/subjects"
+            element={
+              <RequireAuth>
+                <SubjectList />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/registered-subjects"
+            element={
+              <RequireAuth>
+                <RegisteredSubjectPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/tuitions"
+            element={
+              <RequireAuth>
+                <TuitionList />
+              </RequireAuth>
+            }
+          />
         </Routes>
       </div>
       <Footer />
