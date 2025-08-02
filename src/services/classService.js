@@ -39,7 +39,7 @@ export const getClasses = async () => {
     const response = await api.get("/classes");
     return response.data;
   } catch (error) {
-    console.error("Error fetching classes:", error.response?.data || error.message);
+    console.error("Error fetching classes:", error);
     throw error;
   }
 };

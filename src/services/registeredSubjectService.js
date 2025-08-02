@@ -1,5 +1,6 @@
 import api from "./api";
 import { jwtDecode } from "jwt-decode";
+import axios from "axios";
 
 // ==== TIỆN ÍCH AUTH ==== //
 const getToken = () => localStorage.getItem("token");
@@ -55,13 +56,10 @@ export const addRegisteredSubject = async ({ studentId, subjectIds }) => {
 // 🔵 Lấy tất cả đăng ký môn học (toàn bộ - thường dùng cho admin)
 export const getRegisteredSubjects = async () => {
   try {
-    const response = await api.get("/registered-subjects", getAuthHeader());
+    const response = await api.get("/registered-subjects");
     return response.data;
   } catch (error) {
-    console.error(
-      "Error fetching registered subjects:",
-      error.response?.data || error.message
-    );
+    console.error("Error fetching registered subjects:", error);
     throw error;
   }
 };
@@ -88,17 +86,13 @@ export const getSubjectsByStudent = async () => {
 
 // 🔴 Xóa đăng ký môn học
 export const deleteRegisteredSubject = async (id) => {
-  try {
-    const response = await api.delete(
-      `/registered-subjects/${id}`,
-      getAuthHeader()
-    );
-    return response.data;
-  } catch (error) {
-    console.error(
-      "Error deleting registered subject:",
-      error.response?.data || error.message
-    );
-    throw error;
-  }
+  const token = localStorage.getItem("token"); // hoặc nơi bạn lưu token
+  return axios.delete(
+    `http://localhost:3001/api/registered-subjects/${id}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
 };

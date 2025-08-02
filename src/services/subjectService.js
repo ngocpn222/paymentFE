@@ -6,7 +6,7 @@ export const getSubjects = async () => {
     const response = await api.get("/subjects");
     return response.data;
   } catch (error) {
-    console.error("Error fetching subjects:", error.response?.data || error.message);
+    console.error("Error fetching subjects:", error);
     throw error;
   }
 };

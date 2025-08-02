@@ -126,6 +126,7 @@ const ClassList = () => {
         <table className="w-full bg-white rounded-lg shadow-md overflow-hidden">
           <thead>
             <tr className="bg-blue-100 text-gray-700">
+              <th className="px-6 py-3 text-center">STT</th>
               <th className="px-6 py-3 text-center">
                 <FaChalkboardTeacher className="inline-block mr-2" />
                 Tên lớp
@@ -151,6 +152,7 @@ const ClassList = () => {
                 className={`text-gray-700 hover:bg-gray-100 ${index % 2 === 0 ? "bg-gray-50" : "bg-white"
                   }`}
               >
+                <td className="px-6 py-3 text-center">{index + 1}</td>
                 <td className="px-6 py-3 text-center">{cls.name}</td>
                 <td className="px-6 py-3 text-center">{cls.description || "Không có"}</td>
                 <td className="px-6 py-3 text-center">{cls.studentCount || 0}</td>

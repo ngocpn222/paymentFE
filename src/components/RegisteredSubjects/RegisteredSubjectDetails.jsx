@@ -49,6 +49,14 @@ const RegisteredSubjectDetails = ({ subject, onClose }) => {
           <span className="text-lg text-gray-800">{subject.subject?.name || "Không rõ"}</span>
         </div>
 
+        {/* Mã môn học */}
+        <div className="flex justify-between items-center border-b border-gray-300 py-2">
+          <span className="text-lg font-medium text-gray-700 flex items-center">
+            <FaBook className="mr-2 text-indigo-400" /> Mã môn học:
+          </span>
+          <span className="text-lg text-gray-800 font-mono">{subject.subject?.code || "Không rõ"}</span>
+        </div>
+
         {/* Trạng thái */}
         <div className="flex justify-between items-center border-b border-gray-300 py-2">
           <span className="text-lg font-medium text-gray-700 flex items-center">

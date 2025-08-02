@@ -1,23 +1,12 @@
 import api from "./api";
 
-// Helper: Lấy token từ localStorage
-const getAuthHeader = () => {
-  const token = localStorage.getItem("token");
-  return {
-    headers: { Authorization: `Bearer ${token}` },
-  };
-};
-
 // ✅ Lấy danh sách học sinh
 export const getStudents = async () => {
   try {
-    const response = await api.get("/students", getAuthHeader());
+    const response = await api.get("/students");
     return response.data;
   } catch (error) {
-    console.error(
-      "❌ Error fetching students:",
-      error.response?.data || error.message
-    );
+    console.error("❌ Error fetching students:", error);
     throw error;
   }
 };
@@ -25,7 +14,7 @@ export const getStudents = async () => {
 // ✅ Lấy chi tiết học sinh theo ID
 export const getStudentById = async (id) => {
   try {
-    const response = await api.get(`/students/${id}`, getAuthHeader());
+    const response = await api.get(`/students/${id}`);
     return response.data;
   } catch (error) {
     console.error(
@@ -39,7 +28,7 @@ export const getStudentById = async (id) => {
 // ✅ Thêm học sinh mới
 export const addStudent = async (studentData) => {
   try {
-    const response = await api.post("/students", studentData, getAuthHeader());
+    const response = await api.post("/students", studentData);
     return response.data;
   } catch (error) {
     console.error(
@@ -55,8 +44,7 @@ export const updateStudent = async (id, studentData) => {
   try {
     const response = await api.put(
       `/students/${id}`,
-      studentData,
-      getAuthHeader()
+      studentData
     );
     return response.data;
   } catch (error) {
@@ -71,7 +59,7 @@ export const updateStudent = async (id, studentData) => {
 // ✅ Xóa học sinh
 export const deleteStudent = async (id) => {
   try {
-    const response = await api.delete(`/students/${id}`, getAuthHeader());
+    const response = await api.delete(`/students/${id}`);
     return response.data;
   } catch (error) {
     console.error(

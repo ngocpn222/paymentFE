@@ -6,7 +6,7 @@ export const getTeachers = async () => {
     const response = await api.get("/teachers");
     return response.data;
   } catch (error) {
-    console.error("Error fetching teachers:", error.response?.data || error.message);
+    console.error("Error fetching teachers:", error);
     throw error;
   }
 };
