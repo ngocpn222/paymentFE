@@ -38,6 +38,32 @@ const TuitionDetails = ({ tuition, onClose, autoPay }) => {
     }
   };
 
+  // Hàm gọi API mock Momo
+  const handleMockMomo = async () => {
+    try {
+      const res = await fetch("http://localhost:3001/mock-momo", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          tuitionId: tuition._id,
+          student: tuition.student,
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert("Thanh toán Momo giả lập thành công!");
+        onClose();
+        window.location.reload();
+      } else {
+        alert("Thanh toán Momo giả lập thất bại!");
+      }
+    } catch (err) {
+      alert("Thanh toán Momo giả lập thất bại!");
+    }
+  };
+
   if (!tuition) return null;
   return (
     <div className="fixed inset-0 flex justify-center items-center z-50">
@@ -174,8 +200,16 @@ const TuitionDetails = ({ tuition, onClose, autoPay }) => {
             </tbody>
           </table>
         </div>
-        {/* Nút đóng */}
-        <div className="flex justify-center mt-6">
+        {/* Nút thanh toán Momo giả lập và nút đóng */}
+        <div className="flex justify-center gap-4 mt-6">
+          {tuition.status !== "paid" && (
+            <button
+              className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600"
+              onClick={handleMockMomo}
+            >
+              Thanh toán Momo (giả lập)
+            </button>
+          )}
           <button
             className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
             onClick={onClose}

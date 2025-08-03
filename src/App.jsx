@@ -1,5 +1,11 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+  useLocation,
+} from "react-router-dom";
 import Home from "./components/Home";
 import Header from "./components/Header";
 import Login from "./components/Login";
@@ -12,7 +18,9 @@ import RegisteredSubjectPage from "./components/RegisteredSubjects/RegisteredSub
 import TuitionList from "./components/Tuition/TuitionList";
 import Footer from "./components/Footer";
 import RequireAuth from "./components/RequireAuth";
-import './App.css';
+import "./App.css";
+import InvoiceListener from "./components/InvoiceListener";
+import PaidInvoicesPage from "./components/PaidInvoicesPage";
 
 function AppContent() {
   const location = useLocation();
@@ -84,9 +92,11 @@ function AppContent() {
               </RequireAuth>
             }
           />
+          <Route path="/invoices/paid" element={<PaidInvoicesPage />} />
         </Routes>
       </div>
       <Footer />
+      <InvoiceListener />
     </div>
   );
 }

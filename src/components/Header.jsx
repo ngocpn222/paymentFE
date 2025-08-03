@@ -105,6 +105,12 @@ const Header = () => {
           >
             Học phí
           </Link>
+          <Link
+            to="/invoices/paid"
+            className="text-gray-700 hover:text-blue-500 transition font-semibold"
+          >
+            Hóa đơn đã thanh toán
+          </Link>
         </nav>
         {/* Notification và Xin chào sát phải */}
         <div
