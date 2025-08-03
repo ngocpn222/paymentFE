@@ -1,7 +1,12 @@
-// src/socket.js
+// socket.js
 import { io } from "socket.io-client";
 
-// Kết nối tới backend
-const socket = io("http://localhost:5000"); // thay đổi nếu backend khác port/host
+const socket = io("http://localhost:3001", {
+  query: {
+    userId: currentUser._id,
+    role: currentUser.role, // "Student" hoặc "Admin"
+  },
+  transports: ["websocket"],
+});
 
 export default socket;

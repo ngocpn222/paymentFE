@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaRegBell } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
+import useTuitionSocket from "../hooks/useTuitionSocket";
 
 const Header = () => {
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
@@ -11,19 +12,19 @@ const Header = () => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const navigate = useNavigate();
 
+  useTuitionSocket((data) => {
+    const message = `💰 Sinh viên ${
+      data.student.name
+    } đã thanh toán ${data.totalAmount.toLocaleString()} VND`;
+    setNotifications((prev) => [message, ...prev]);
+    setUnreadCount((prev) => prev + 1);
+  });
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
       setIsLoggedIn(true);
       setEmail(localStorage.getItem("email") || "Người dùng");
-      // Khi đăng nhập, giả lập có 3 thông báo mới
-      const noti = [
-        "Thông báo 1: Hạn nộp học phí sắp đến.",
-        "Thông báo 2: Đăng ký môn học mới đã mở.",
-        "Thông báo 3: Cập nhật thông tin cá nhân.",
-      ];
-      setNotifications(noti);
-      setUnreadCount(noti.length);
     } else {
       setIsLoggedIn(false);
       setNotifications([]);
@@ -106,7 +107,10 @@ const Header = () => {
           </Link>
         </nav>
         {/* Notification và Xin chào sát phải */}
-        <div className="flex items-center justify-end" style={{ minWidth: 140 }}>
+        <div
+          className="flex items-center justify-end"
+          style={{ minWidth: 140 }}
+        >
           {/* Notification Icon */}
           <div className="relative">
             <button onClick={toggleNotification} className="relative">

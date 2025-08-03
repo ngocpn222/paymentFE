@@ -67,7 +67,9 @@ const TuitionDetails = ({ tuition, onClose, autoPay }) => {
             <span className="text-lg font-medium text-gray-700 flex items-center">
               <FaUser className="mr-2 text-blue-500" /> Sinh viên:
             </span>
-            <span className="text-lg text-gray-800">{tuition.student?.name || "Không rõ"}</span>
+            <span className="text-lg text-gray-800">
+              {tuition.student?.name || "Không rõ"}
+            </span>
           </div>
           <div className="flex justify-between items-center border-b border-gray-300 py-2">
             <span className="text-lg font-medium text-gray-700 flex items-center">
@@ -93,7 +95,9 @@ const TuitionDetails = ({ tuition, onClose, autoPay }) => {
             <span className="text-lg font-medium text-gray-700 flex items-center">
               <FaEnvelope className="mr-2 text-pink-500" /> Email:
             </span>
-            <span className="text-lg text-gray-800">{tuition.student?.email || "Không rõ"}</span>
+            <span className="text-lg text-gray-800">
+              {tuition.student?.email || "Không rõ"}
+            </span>
           </div>
           <div className="flex justify-between items-center border-b border-gray-300 py-2">
             <span className="text-lg font-medium text-gray-700 flex items-center">
@@ -134,10 +138,16 @@ const TuitionDetails = ({ tuition, onClose, autoPay }) => {
           <table className="w-full mt-2 border">
             <thead>
               <tr>
-                <th className="border px-2 py-1"><FaHashtag className="inline mr-1" /> Mã môn</th>
-                <th className="border px-2 py-1"><FaBookOpen className="inline mr-1" /> Tên môn</th>
+                <th className="border px-2 py-1">
+                  <FaHashtag className="inline mr-1" /> Mã môn
+                </th>
+                <th className="border px-2 py-1">
+                  <FaBookOpen className="inline mr-1" /> Tên môn
+                </th>
                 <th className="border px-2 py-1">Tín chỉ</th>
-                <th className="border px-2 py-1"><FaCoins className="inline mr-1" /> Đơn giá</th>
+                <th className="border px-2 py-1">
+                  <FaCoins className="inline mr-1" /> Đơn giá
+                </th>
                 <th className="border px-2 py-1">Thành tiền</th>
               </tr>
             </thead>
@@ -146,10 +156,18 @@ const TuitionDetails = ({ tuition, onClose, autoPay }) => {
                 <tr key={idx}>
                   <td className="border px-2 py-1 font-mono">{subj.code}</td>
                   <td className="border px-2 py-1">{subj.name}</td>
-                  <td className="border px-2 py-1 text-center">{subj.credit}</td>
-                  <td className="border px-2 py-1 text-right">{subj.unitPrice?.toLocaleString() || "300,000"} VND</td>
+                  <td className="border px-2 py-1 text-center">
+                    {subj.credit}
+                  </td>
                   <td className="border px-2 py-1 text-right">
-                    {(subj.unitPrice && subj.credit ? subj.unitPrice * subj.credit : 300000 * subj.credit).toLocaleString()} VND
+                    {subj.unitPrice?.toLocaleString() || "300,000"} VND
+                  </td>
+                  <td className="border px-2 py-1 text-right">
+                    {(subj.unitPrice && subj.credit
+                      ? subj.unitPrice * subj.credit
+                      : 300000 * subj.credit
+                    ).toLocaleString()}{" "}
+                    VND
                   </td>
                 </tr>
               ))}
