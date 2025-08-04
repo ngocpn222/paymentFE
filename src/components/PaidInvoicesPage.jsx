@@ -101,7 +101,7 @@ const PaidInvoicesPage = () => {
                     {invoice.student?.name || "N/A"}
                   </td>
                   <td className="px-4 py-3">
-                    {invoice.student?.mssv || "N/A"}
+                    {invoice.student?._id || "N/A"}
                   </td>
                   <td className="px-4 py-3">
                     {invoice.student?.classId?.name || "N/A"}
